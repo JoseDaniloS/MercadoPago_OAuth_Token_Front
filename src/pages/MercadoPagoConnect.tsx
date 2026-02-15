@@ -5,7 +5,8 @@ export default function MercadoPagoConnect() {
     const [searchParams] = useSearchParams()
     const code = searchParams.get("code");
     const CLIENT_ID = "1549445475571223"
-    const redirectUri = window.location.origin + window.location.pathname
+    const redirectUri = window.location.origin + "/oauth/mercadopago"
+    console.log(redirectUri)
 
     useEffect(() => {
         window.location.href = `https://auth.mercadopago.com.br/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${redirectUri}`
