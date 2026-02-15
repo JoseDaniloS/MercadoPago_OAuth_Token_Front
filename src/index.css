@@ -1,1 +1,68 @@
 @import "tailwindcss";
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--color-midnight-dark);
+}
+
+.tech-grid {
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.glass-card {
+  background: rgba(21, 30, 50, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+@theme {
+  /* 🎨 Colors */
+  --color-primary: #d4af37;
+  --color-primary-hover: #c5a028;
+  --color-light-dark: rgb(118, 118, 118);
+
+  --color-midnight-dark: #0b1120;
+  --color-midnight-light: #151e32;
+  --color-charcoal: #1e293b;
+  --color-text-gray: #94A3B8;
+
+  --color-surface-glass: rgba(30, 41, 59, 0.4);
+
+  /* 🔤 Fonts */
+  --font-display: "Roboto", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* 🧩 Backgrounds */
+  --background-image-grid-pattern:
+    linear-gradient(to right, #1e293b 1px, transparent 1px),
+    linear-gradient(to bottom, #1e293b 1px, transparent 1px);
+}
+
+@layer components {
+  .inputs {
+    @apply w-full  px-3 py-3 focus:outline-none focus:ring-2 focus:ring-blue-200 bg-slate-800/50 rounded border border-slate-700/50 placeholder:text-slate-400;
+  }
+
+  .subtitles {
+    @apply w-full text-nowrap font-normal text-text-gray max-md:text-sm
+  }
+
+  .titles {
+    @apply w-full text-2xl font-bold text-white
+  }
+}
+
+iframe {
+  max-height: 30px;
+}
+
+b {
+  color: var(--color-primary);
+}
