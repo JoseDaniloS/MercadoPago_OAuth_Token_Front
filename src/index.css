@@ -31,7 +31,7 @@ body {
   --color-midnight-dark: #0b1120;
   --color-midnight-light: #151e32;
   --color-charcoal: #1e293b;
-  --color-text-gray: #94A3B8;
+  --color-text-gray: #94a3b8;
 
   --color-surface-glass: rgba(30, 41, 59, 0.4);
 
@@ -51,11 +51,11 @@ body {
   }
 
   .subtitles {
-    @apply w-full text-nowrap font-normal text-text-gray max-md:text-sm
+    @apply w-full text-nowrap font-normal text-text-gray max-md:text-sm;
   }
 
   .titles {
-    @apply w-full text-2xl font-bold text-white
+    @apply w-full text-2xl font-bold text-white;
   }
 }
 

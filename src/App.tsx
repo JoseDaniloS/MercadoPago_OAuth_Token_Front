@@ -1,27 +1,40 @@
-import { Authenticator } from '@aws-amplify/ui-react';
-import { Amplify } from 'aws-amplify';
-import outputs from '../amplify_outputs.json';
-import '@aws-amplify/ui-react/styles.css';
-import components from './cognito/components';
-import "./styles/cognito.css"
-import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { formFields } from './cognito/formFields.js';
-import Dashboard from './pages/Dashboard';
-import { useEffect } from 'react';
-import { AuthUser } from 'aws-amplify/auth';
-import HeaderDashboard from './layout/HeaderDashboard';
-import Transactions from './pages/Transactions';
-import MercadoPagoConnect from './pages/MercadoPagoConnect';
+import { Authenticator } from "@aws-amplify/ui-react";
+import { Amplify } from "aws-amplify";
+import outputs from "../amplify_outputs.json";
+import "@aws-amplify/ui-react/styles.css";
+import components from "./cognito/components";
+import "./styles/cognito.css";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import { formFields } from "./cognito/formFields.js";
+import Dashboard from "./pages/Dashboard";
+import { useEffect } from "react";
+import { AuthUser } from "aws-amplify/auth";
+import HeaderDashboard from "./layout/HeaderDashboard";
+import Transactions from "./pages/Transactions";
+import MercadoPagoConnect from "./pages/MercadoPagoConnect";
 
 Amplify.configure(outputs);
 
-function AppRoutes({ user, signOut }: { user?: AuthUser; signOut?: () => void }) {
+function AppRoutes({
+  user,
+  signOut,
+}: {
+  user?: AuthUser;
+  signOut?: () => void;
+}) {
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     if (user && location.pathname === "/") {
-      navigate('/dashboard', { replace: true });
+      navigate("/dashboard", { replace: true });
     }
   }, [user, navigate]);
 
@@ -30,21 +43,25 @@ function AppRoutes({ user, signOut }: { user?: AuthUser; signOut?: () => void })
   return (
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path='/oauth/mercadopago' element={<MercadoPagoConnect />} />
+      <Route path="/oauth/mercadopago" element={<MercadoPagoConnect />} />
       <Route path="/transactions" element={<Transactions />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }
 
-
 export default function App() {
   return (
-    <div className='tech-grid h-full min-h-screen flex items-center justify-center'>
-      <Authenticator className='p-6' formFields={formFields} socialProviders={["google"]} components={components}>
+    <div className="tech-grid h-full min-h-screen flex items-center justify-center">
+      <Authenticator
+        className="p-6"
+        formFields={formFields}
+        socialProviders={["google"]}
+        components={components}
+      >
         {({ user, signOut }) => (
           <BrowserRouter>
-            <div className='w-full'>
+            <div className="w-full">
               <HeaderDashboard signOut={signOut} user={user} />
               <AppRoutes user={user} signOut={signOut} />
             </div>

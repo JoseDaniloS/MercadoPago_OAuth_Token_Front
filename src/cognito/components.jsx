@@ -1,7 +1,14 @@
-import { useTheme, View, Text, Heading, useAuthenticator, Button, Divider } from "@aws-amplify/ui-react";
+import {
+  useTheme,
+  View,
+  Text,
+  Heading,
+  useAuthenticator,
+  Button,
+  Divider,
+} from "@aws-amplify/ui-react";
 
 const components = {
-
   Footer() {
     const { tokens } = useTheme();
 
@@ -25,12 +32,15 @@ const components = {
           level={3}
         >
           Bem-vindo de volta
-          <Text style={{
-            fontSize: "14",
-            marginTop: "10px",
-            fontWeight: 400,
-            color: "#9CA3AF"
-          }} fontSize={14}>
+          <Text
+            style={{
+              fontSize: "14",
+              marginTop: "10px",
+              fontWeight: 400,
+              color: "#9CA3AF",
+            }}
+            fontSize={14}
+          >
             Acesse sua conta para gerenciar pagamentos e integrações.
           </Text>
         </Heading>
@@ -41,11 +51,15 @@ const components = {
       const { toForgotPassword, toSignUp } = useAuthenticator();
 
       return (
-        <View textAlign="center" style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px"
-        }} marginTop="0.25rem">
+        <View
+          textAlign="center"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+          }}
+          marginTop="0.25rem"
+        >
           <Text
             className="forgotPassword"
             textAlign="right"
@@ -57,17 +71,21 @@ const components = {
             Esqueci minha senha
           </Text>
 
-          <View style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px"
-          }}>
+          <View
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
             <Divider />
-            <Text style={{
-              color: "#6B7280",
-              fontSize: 12,
-              textWrap: "nowrap"
-            }} >
+            <Text
+              style={{
+                color: "#6B7280",
+                fontSize: 12,
+                textWrap: "nowrap",
+              }}
+            >
               NOVO POR AQUI?
             </Text>
             <Divider />
@@ -79,7 +97,7 @@ const components = {
               borderRadius: "8px",
               padding: "16px 14px",
               width: "100%",
-              fontWeight: 400
+              fontWeight: 400,
             }}
             size="small"
             onClick={toSignUp}
@@ -101,12 +119,15 @@ const components = {
           level={3}
         >
           Criar sua conta
-          <Text style={{
-            fontSize: "14",
-            marginTop: "10px",
-            fontWeight: 400,
-            color: "#9CA3AF"
-          }} fontSize={14}>
+          <Text
+            style={{
+              fontSize: "14",
+              marginTop: "10px",
+              fontWeight: 400,
+              color: "#9CA3AF",
+            }}
+            fontSize={14}
+          >
             Preencha os dados abaixo para começar a usar o Chronos Pay
           </Text>
         </Heading>
@@ -116,23 +137,30 @@ const components = {
       const { toSignIn } = useAuthenticator();
 
       return (
-        <View textAlign="center" style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px"
-        }} marginTop="1rem">
-
-          <View style={{
+        <View
+          textAlign="center"
+          style={{
             display: "flex",
-            alignItems: "center",
-            gap: "10px"
-          }}>
+            flexDirection: "column",
+            gap: "16px",
+          }}
+          marginTop="1rem"
+        >
+          <View
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
             <Divider />
-            <Text style={{
-              color: "#6B7280",
-              fontSize: 12,
-              textWrap: "nowrap"
-            }} >
+            <Text
+              style={{
+                color: "#6B7280",
+                fontSize: 12,
+                textWrap: "nowrap",
+              }}
+            >
               JÁ TEM UMA CONTA?
             </Text>
             <Divider />
@@ -144,7 +172,7 @@ const components = {
               borderRadius: "8px",
               padding: "16px 14px",
               width: "100%",
-              fontWeight: 400
+              fontWeight: 400,
             }}
             size="small"
             onClick={toSignIn}
@@ -209,14 +237,10 @@ const components = {
 
   ForgotPassword: {
     Header() {
-  
-      return (<>
-        <Heading
-          level={3}
-        >
-          Recuperar senha
-        </Heading>
-      </>
+      return (
+        <>
+          <Heading level={3}>Recuperar senha</Heading>
+        </>
       );
     },
   },
@@ -255,7 +279,6 @@ const components = {
       return <Text>Informações do rodapé</Text>;
     },
   },
-
-}
+};
 
 export default components;

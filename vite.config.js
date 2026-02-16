@@ -1,15 +1,11 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 import mkcert from "vite-plugin-mkcert";
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    mkcert(),
-    react(),
-    tailwindcss(),
-  ],
+  plugins: [mkcert(), react(), tailwindcss()],
   server: {
-    https:true
-  }
-})
+    https: true,
+  },
+});

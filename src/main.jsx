@@ -1,8 +1,8 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import { ThemeProvider, defaultTheme } from '@aws-amplify/ui-react'
-import App from './App'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import { ThemeProvider, defaultTheme } from "@aws-amplify/ui-react";
+import App from "./App";
 
 const theme = {
   ...defaultTheme,
@@ -26,12 +26,10 @@ const theme = {
   },
 };
 
-
-
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>
   </StrictMode>,
-)
+);
