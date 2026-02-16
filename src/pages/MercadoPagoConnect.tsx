@@ -7,6 +7,7 @@ import CopyButton from "../components/copyButton";
 import { Button } from "../components/Button";
 import ErrorPage from "./ErrorPage";
 import LoadingPage from "./LoadingPage";
+import { AuthUser } from "aws-amplify/auth";
 
 interface OAuthData {
   access_token: string;
@@ -14,7 +15,11 @@ interface OAuthData {
   user_id?: string;
 }
 
-export default function MercadoPagoConnect() {
+interface MercadoPagoConnect {
+  user?: AuthUser;
+}
+
+export default function MercadoPagoConnect({ user }: MercadoPagoConnect) {
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code") || "";
   const CLIENT_ID = "1549445475571223";
@@ -36,8 +41,9 @@ export default function MercadoPagoConnect() {
 
     const sendCode = async () => {
       try {
+        const userId = String(user?.userId);
         setLoading(true);
-        const response = await fetchOAuthMercadoPago(code);
+        const response = await fetchOAuthMercadoPago(code, userId);
         setOAuthData(response);
       } catch (error) {
         setError(true);

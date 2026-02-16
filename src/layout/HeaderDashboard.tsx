@@ -4,27 +4,25 @@ import { useEffect, useState } from "react";
 
 interface HeaderDashboardComposition {
   signOut?: () => void;
-  user?: AuthUser;
 }
 
 export default function HeaderDashboard({
-  user,
   signOut,
 }: HeaderDashboardComposition) {
-  const fetchUserAttributes = async () => {
-    try {
-      const response = await fetchAuthSession({ forceRefresh: true });
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const fetchUserAttributes = async () => {
+  //   try {
+  //     const response = await fetchAuthSession({ forceRefresh: true });
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const [showModalHeader, setShowModalHeader] = useState<boolean>(false);
 
-  useEffect(() => {
-    fetchUserAttributes();
-  }, []);
+  // useEffect(() => {
+  //   fetchUserAttributes();
+  // }, []);
 
   return (
     <header className="w-full p-3 flex gap-5 justify-between items-center bg-charcoal/50">

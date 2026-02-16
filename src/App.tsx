@@ -43,7 +43,7 @@ function AppRoutes({
   return (
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/oauth/mercadopago" element={<MercadoPagoConnect />} />
+      <Route path="/oauth/mercadopago" element={<MercadoPagoConnect user={user} />} />
       <Route path="/transactions" element={<Transactions />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
@@ -62,7 +62,7 @@ export default function App() {
         {({ user, signOut }) => (
           <BrowserRouter>
             <div className="w-full">
-              <HeaderDashboard signOut={signOut} user={user} />
+              <HeaderDashboard signOut={signOut} />
               <AppRoutes user={user} signOut={signOut} />
             </div>
           </BrowserRouter>
