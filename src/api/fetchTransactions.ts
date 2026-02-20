@@ -1,28 +1,39 @@
 import axios from "axios";
+import { getCognitoIdToken } from "../utils/Authorizer";
 
-const API_URL = "https://clunroropj.execute-api.us-east-1.amazonaws.com/";
+type LastEvaluatedKey = Record<string, unknown>;
 
 export async function fetchTransactionsWithPagination(
-  userId?: string,
-  pageSize?: string | number,
-  lastEvaluatedKey?: object | undefined,
+  userId: string,
+  pageSize: number = 10,
+  lastEvaluatedKey?: LastEvaluatedKey,
 ) {
   if (!userId) {
     throw new Error("User id não informado");
   }
+
   try {
     const params = new URLSearchParams({
       userId,
-      pageSize: String(1),
-      lastEvaluatedKey: lastEvaluatedKey ? JSON.stringify(lastEvaluatedKey) : ""
+      pageSize: String(pageSize),
+      ...(lastEvaluatedKey && {
+        lastEvaluatedKey: JSON.stringify(lastEvaluatedKey),
+      }),
     });
+    const idToken = await getCognitoIdToken();
+
     const response = await axios.get(
-      `${API_URL}payments?${params}
-      `,
+      `${import.meta.env.VITE_API_URL}/payments?${params.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
     );
+
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error("Erro ao buscar transações:", error);
     throw error;
   }
 }

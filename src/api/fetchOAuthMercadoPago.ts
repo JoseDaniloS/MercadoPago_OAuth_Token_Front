@@ -1,21 +1,23 @@
 import axios from "axios";
+import { getCognitoIdToken } from "../utils/Authorizer";
 
-const API_URL = "https://clunroropj.execute-api.us-east-1.amazonaws.com/";
+export async function fetchOAuthMercadoPago(code: string, user_id: string) {
+  if (!code) throw new Error("Code não informado");
+  if (!user_id) throw new Error("User id não informado");
 
-export async function fetchOAuthMercadoPago(token: string, user_id: string) {
-  if (!token) {
-    throw new Error("Token não encontrado");
-  }
-  if (!user_id) {
-    throw new Error("User id não informado");
-  }
-  try {
-    const response = await axios.post(`${API_URL}oauth?code=${token}`, {
-      user_id: user_id,
-    });
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  const idToken = await getCognitoIdToken();
+
+  const response = await axios.post(
+    `${import.meta.env.VITE_API_URL}/oauth?code=${code}`,
+    {
+      user_id,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    },
+  );
+
+  return response.data;
 }

@@ -38,7 +38,7 @@ export default function MercadoPagoConnect({ user }: UserAmplify) {
       window.location.href = `https://auth.mercadopago.com.br/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${redirectUri}`;
       return;
     }
-
+    
     const sendCode = async () => {
       try {
         const userId = String(user?.userId);
@@ -46,6 +46,7 @@ export default function MercadoPagoConnect({ user }: UserAmplify) {
         const response = await fetchOAuthMercadoPago(code, userId);
         setOAuthData(response);
       } catch (error) {
+        console.log(error);
         setError(true);
       } finally {
         setLoading(false);
