@@ -2,8 +2,37 @@ import { Download } from "lucide-react";
 import { Button } from "../components/Button";
 import StatusBadge from "../components/statusBadge";
 import { Table } from "../components/Table";
+import { useEffect, useState, useTransition } from "react";
+import { fetchTransactionsWithPagination } from "../api/fetchTransactions";
+import { UserAmplify } from "./MercadoPagoConnect";
+import { truncate } from "node:fs";
+import { truncateString } from "../utils/StringUtils";
+import { formatDate } from "../utils/DateUtils";
+import PaymentMethodBadge from "../components/PaymentMethodBadge";
 
-export default function Transactions() {
+export default function Transactions({ user }: UserAmplify) {
+  const [lastEvaluatedKey, setLastEvaluatedKey] = useState();
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    const fetchTransaction = async () => {
+      try {
+        const response = await fetchTransactionsWithPagination(
+          user?.userId,
+          1,
+          lastEvaluatedKey,
+        );
+        if (response.LastEvaluatedKey)
+          setLastEvaluatedKey(response.LastEvaluatedKey);
+
+        setTransactions(response.Items);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchTransaction();
+  }, []);
+
   return (
     <div className="w-full p-6 min-h-screen flex flex-col gap-5 overflow-x-hidden">
       <div className="flex justify-between md:max-h-14 max-md:flex-col max-md:gap-5">
@@ -28,44 +57,61 @@ export default function Transactions() {
             <Table.Head.Data>Cliente</Table.Head.Data>
             <Table.Head.Data>Método</Table.Head.Data>
             <Table.Head.Data>Valor</Table.Head.Data>
-            <Table.Head.Data>Data</Table.Head.Data>
             <Table.Head.Data>Status</Table.Head.Data>
+            <Table.Head.Data>Data</Table.Head.Data>
             <Table.Head.Data></Table.Head.Data>
           </Table.Head.Root>
           <Table.Body.Root>
-            <Table.Body.Row>
-              <Table.Body.Data>
-                <div className="font-medium text-white">txn_892jdn...2k9</div>
-                <div className="text-xs text-gray-500">API Ref: order_123</div>
-              </Table.Body.Data>
-              <Table.Body.Data>
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-purple-600 text-white text-xs font-semibold">
-                    JD
-                  </div>
-                  <div>
-                    <div className="font-medium text-white">João da Silva</div>
-                    <div className="text-xs text-gray-500">joao@email.com</div>
-                  </div>
-                </div>
-              </Table.Body.Data>
-              <Table.Body.Data>
-                <span className="text-green-400 font-medium">Pix</span>
-              </Table.Body.Data>
-              <Table.Body.Data>
-                <span>R$ 150,00</span>
-              </Table.Body.Data>
-              <Table.Body.Data>
-                <div>24 Out 2023</div>
-                <div className="text-xs text-gray-500">14:30</div>
-              </Table.Body.Data>
-              <Table.Body.Data>
-                <StatusBadge status="approved" />
-              </Table.Body.Data>
-              <Table.Body.Data className="text-right">
-                <button> ⋮</button>
-              </Table.Body.Data>
-            </Table.Body.Row>
+            {transactions.map((transaction, index) => {
+              const { date, time } = formatDate(transaction?.date_created);
+              return (
+                <Table.Body.Row key={index}>
+                  <Table.Body.Data>
+                    <div className="font-medium text-white">
+                      {transaction?.id}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      API Ref: {truncateString(transaction.external_reference)}
+                    </div>
+                  </Table.Body.Data>
+                  <Table.Body.Data>
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-purple-600 text-white text-xs font-semibold">
+                        JD
+                      </div>
+                      <div>
+                        <div className="font-medium text-white">
+                          {transaction.payer.first_name || "Sem nome"}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {transaction.payer.email || "Sem Email"}
+                        </div>
+                      </div>
+                    </div>
+                  </Table.Body.Data>
+                  <Table.Body.Data>
+                    <span className="text-green-400 font-medium uppercase">
+                      <PaymentMethodBadge
+                        payment_method_id={transaction.payment_method_id}
+                      />
+                    </span>
+                  </Table.Body.Data>
+                  <Table.Body.Data>
+                    <span>R$ {transaction.transaction_amount}</span>
+                  </Table.Body.Data>
+                  <Table.Body.Data>
+                    <StatusBadge status={transaction.status} />
+                  </Table.Body.Data>
+                  <Table.Body.Data>
+                    <div>{date}</div>
+                    <div className="text-xs text-gray-500">{time}</div>
+                  </Table.Body.Data>
+                  <Table.Body.Data className="text-right">
+                    <button> ⋮</button>
+                  </Table.Body.Data>
+                </Table.Body.Row>
+              );
+            })}
           </Table.Body.Root>
         </Table.Root>
       </div>

@@ -44,7 +44,7 @@ function AppRoutes({
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/oauth/mercadopago" element={<MercadoPagoConnect user={user} />} />
-      <Route path="/transactions" element={<Transactions />} />
+      <Route path="/transactions" element={<Transactions user={user} />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );

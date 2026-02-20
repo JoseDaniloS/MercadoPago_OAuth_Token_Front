@@ -1,6 +1,5 @@
-import { AuthUser, fetchAuthSession } from "aws-amplify/auth";
-import { Clock, LogOut, ShieldCheck } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Clock, LogOut } from "lucide-react";
+import { useState } from "react";
 
 interface HeaderDashboardComposition {
   signOut?: () => void;
@@ -9,20 +8,7 @@ interface HeaderDashboardComposition {
 export default function HeaderDashboard({
   signOut,
 }: HeaderDashboardComposition) {
-  // const fetchUserAttributes = async () => {
-  //   try {
-  //     const response = await fetchAuthSession({ forceRefresh: true });
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const [showModalHeader, setShowModalHeader] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   fetchUserAttributes();
-  // }, []);
 
   return (
     <header className="w-full p-3 flex gap-5 justify-between items-center bg-charcoal/50">

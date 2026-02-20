@@ -15,11 +15,11 @@ interface OAuthData {
   user_id?: string;
 }
 
-interface MercadoPagoConnect {
+export interface UserAmplify {
   user?: AuthUser;
 }
 
-export default function MercadoPagoConnect({ user }: MercadoPagoConnect) {
+export default function MercadoPagoConnect({ user }: UserAmplify) {
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code") || "";
   const CLIENT_ID = "1549445475571223";
