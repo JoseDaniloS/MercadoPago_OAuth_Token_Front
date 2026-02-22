@@ -17,7 +17,7 @@ export default function TableHead({
         className,
       )}
     >
-      {children}
+      <tr>{children}</tr>
     </thead>
   );
 }

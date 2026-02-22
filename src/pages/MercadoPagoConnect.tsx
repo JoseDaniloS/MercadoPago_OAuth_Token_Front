@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { fetchOAuthMercadoPago } from "../api/fetchOAuthMercadoPago";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  fetchOAuthMercadoPago,
+  getOAuthMercadoPago,
+} from "../api/fetchOAuthMercadoPago";
 import TextUppercase from "../components/TextUppercase";
 import { ArrowRight, CheckCircle, Info, KeyRound } from "lucide-react";
 import CopyButton from "../components/copyButton";
@@ -8,43 +11,52 @@ import { Button } from "../components/Button";
 import ErrorPage from "./ErrorPage";
 import LoadingPage from "./LoadingPage";
 import { AuthUser } from "aws-amplify/auth";
-
-interface OAuthData {
-  access_token: string;
-  refresh_token?: string;
-  user_id?: string;
-}
+import { truncateString } from "../utils/StringUtils";
+import { useAuth } from "../context/AuthContext";
+import { MercadoPagoIntegration } from "../types/auth";
 
 export interface UserAmplify {
-  user?: AuthUser;
+  userCognito?: AuthUser;
 }
 
-export default function MercadoPagoConnect({ user }: UserAmplify) {
+export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
   const [searchParams] = useSearchParams();
-  const code = searchParams.get("code") || "";
+  const code = searchParams.get("code");
   const CLIENT_ID = "1549445475571223";
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [oAuthData, setOAuthData] = useState<OAuthData>({
-    access_token: "",
-  });
+  const [oAuthData, setOAuthData] = useState<MercadoPagoIntegration | any>();
+
+  const { user, isLoading } = useAuth();
+  useEffect(() => {
+    if (user?.mp) {
+      setOAuthData(user.mp);
+    }
+  }, [user]);
+
+  const navigate = useNavigate();
   const redirectUri = useMemo(
     () => `${window.location.origin}/oauth/mercadopago`,
     [],
   );
 
   useEffect(() => {
-    if (!code) {
-      window.location.href = `https://auth.mercadopago.com.br/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${redirectUri}`;
-      return;
-    }
-    
-    const sendCode = async () => {
+    const checkConnection = async () => {
       try {
-        const userId = String(user?.userId);
+        const userId = userCognito?.userId;
+        if (!userId) return;
+        if (user?.mp || isLoading) return;
+        // Sem code → redireciona para o Mercado Pago autorizar
+        if (!code) {
+          console.log("Redirecionando para Mercado Pago...");
+          window.location.href = `https://auth.mercadopago.com.br/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${redirectUri}`;
+          return;
+        }
+
+        // Tem code → faz o OAuth
         setLoading(true);
-        const response = await fetchOAuthMercadoPago(code, userId);
-        setOAuthData(response);
+        const response = await fetchOAuthMercadoPago(userId, code);
+        if (response) setOAuthData(response);
       } catch (error) {
         console.log(error);
         setError(true);
@@ -53,9 +65,9 @@ export default function MercadoPagoConnect({ user }: UserAmplify) {
       }
     };
 
-    sendCode();
-  }, [code, redirectUri]);
-  if (loading) {
+    checkConnection();
+  }, [code, redirectUri, userCognito, user, isLoading]);
+  if (loading || isLoading) {
     return <LoadingPage />;
   }
 
@@ -79,6 +91,20 @@ export default function MercadoPagoConnect({ user }: UserAmplify) {
         </p>
 
         <div className="w-full flex flex-col gap-5">
+          {/* Public Key*/}
+          <div className="w-full">
+            <TextUppercase className="text-primary">PUBLIC KEY</TextUppercase>
+            <div className="inputs flex gap-3 hover:bg-primary/20 transition-all duration-200">
+              <KeyRound />
+              <input
+                className="w-full focus:outline-none"
+                readOnly
+                value={truncateString(oAuthData?.public_key, 30) || ""}
+              />
+              <CopyButton value={oAuthData?.public_key || ""} />
+            </div>
+          </div>
+
           {/* Access Token */}
           <div className="w-full">
             <TextUppercase className="text-primary">ACCESS TOKEN</TextUppercase>
@@ -87,9 +113,9 @@ export default function MercadoPagoConnect({ user }: UserAmplify) {
               <input
                 className="w-full focus:outline-none"
                 readOnly
-                value={oAuthData.access_token}
+                value={truncateString(oAuthData?.access_token, 30)}
               />
-              <CopyButton value={oAuthData.access_token} />
+              <CopyButton value={oAuthData?.access_token} />
             </div>
           </div>
 
@@ -103,23 +129,23 @@ export default function MercadoPagoConnect({ user }: UserAmplify) {
               <input
                 className="w-full focus:outline-none"
                 readOnly
-                value={oAuthData.refresh_token || ""}
+                value={truncateString(oAuthData?.refresh_token, 30) || ""}
               />
-              <CopyButton value={oAuthData.refresh_token || ""} />
+              <CopyButton value={oAuthData?.refresh_token || ""} />
             </div>
           </div>
 
           {/* User ID */}
           <div className="w-full">
-            <TextUppercase className="text-primary">USER ID</TextUppercase>
+            <TextUppercase className="text-primary">MERCHANT ID</TextUppercase>
             <div className="inputs flex gap-3 hover:bg-primary/20 transition-all duration-200">
               <KeyRound />
               <input
                 className="w-full focus:outline-none"
                 readOnly
-                value={oAuthData.user_id || ""}
+                value={oAuthData?.merchant_id || ""}
               />
-              <CopyButton value={oAuthData.user_id || ""} />
+              <CopyButton value={oAuthData?.merchant_id || ""} />
             </div>
           </div>
 
@@ -136,7 +162,10 @@ export default function MercadoPagoConnect({ user }: UserAmplify) {
             </div>
           </div>
 
-          <Button.Root className="justify-center text-charcoal">
+          <Button.Root
+            onClick={() => navigate("/dashboard")}
+            className="justify-center text-charcoal"
+          >
             Voltar para o Dashboard
             <Button.Icon className="text-charcoal w-4" icon={ArrowRight} />
           </Button.Root>

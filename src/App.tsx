@@ -19,6 +19,7 @@ import { AuthUser } from "aws-amplify/auth";
 import HeaderDashboard from "./layout/HeaderDashboard";
 import Transactions from "./pages/Transactions";
 import MercadoPagoConnect from "./pages/MercadoPagoConnect";
+import { AuthProvider } from "./context/AuthContext";
 
 Amplify.configure(outputs);
 
@@ -43,8 +44,14 @@ function AppRoutes({
   return (
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/oauth/mercadopago" element={<MercadoPagoConnect user={user} />} />
-      <Route path="/transactions" element={<Transactions user={user} />} />
+      <Route
+        path="/oauth/mercadopago"
+        element={<MercadoPagoConnect userCognito={user} />}
+      />
+      <Route
+        path="/transactions"
+        element={<Transactions userCognito={user} />}
+      />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
@@ -60,12 +67,14 @@ export default function App() {
         components={components}
       >
         {({ user, signOut }) => (
-          <BrowserRouter>
-            <div className="w-full">
-              <HeaderDashboard signOut={signOut} />
-              <AppRoutes user={user} signOut={signOut} />
-            </div>
-          </BrowserRouter>
+          <AuthProvider userCognito={user}>
+            <BrowserRouter>
+              <div className="w-full">
+                <HeaderDashboard signOut={signOut} userCognito={user} />
+                <AppRoutes user={user} signOut={signOut} />
+              </div>
+            </BrowserRouter>
+          </AuthProvider>
         )}
       </Authenticator>
     </div>

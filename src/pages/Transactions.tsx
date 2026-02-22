@@ -2,23 +2,23 @@ import { Download } from "lucide-react";
 import { Button } from "../components/Button";
 import StatusBadge from "../components/statusBadge";
 import { Table } from "../components/Table";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState} from "react";
 import { fetchTransactionsWithPagination } from "../api/fetchTransactions";
 import { UserAmplify } from "./MercadoPagoConnect";
-import { truncate } from "node:fs";
 import { truncateString } from "../utils/StringUtils";
 import { formatDate } from "../utils/DateUtils";
 import PaymentMethodBadge from "../components/PaymentMethodBadge";
 
-export default function Transactions({ user }: UserAmplify) {
+export default function Transactions({ userCognito }: UserAmplify) {
   const [lastEvaluatedKey, setLastEvaluatedKey] = useState();
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     const fetchTransaction = async () => {
       try {
+        console.log("Buscando transações para o usuário:", userCognito?.userId);
         const response = await fetchTransactionsWithPagination(
-          user?.userId,
+          userCognito?.userId,
           1,
           lastEvaluatedKey,
         );

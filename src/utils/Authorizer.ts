@@ -8,6 +8,5 @@ export async function getCognitoIdToken(): Promise<string> {
   if (!accessToken) {
     throw new Error("Access token não encontrado");
   }
-    console.log(accessToken)
   return accessToken;
 }

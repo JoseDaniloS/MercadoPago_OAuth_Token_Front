@@ -4,7 +4,7 @@ import { getCognitoIdToken } from "../utils/Authorizer";
 type LastEvaluatedKey = Record<string, unknown>;
 
 export async function fetchTransactionsWithPagination(
-  userId: string,
+  userId?: string,
   pageSize: number = 10,
   lastEvaluatedKey?: LastEvaluatedKey,
 ) {
