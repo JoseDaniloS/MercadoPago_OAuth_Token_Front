@@ -71,10 +71,12 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
     return <LoadingPage />;
   }
 
+
+
   if (error) {
     return <ErrorPage />;
   }
-
+ 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
       <div className="glass-card gap-3 max-w-xl p-10 flex flex-col items-center overflow-hidden justify-center text-white">

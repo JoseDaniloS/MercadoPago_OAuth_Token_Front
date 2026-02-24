@@ -1,9 +1,10 @@
-import { ReactNode } from "react";
+import { ReactNode, TdHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
-interface TableBodyDataComposition {
+interface TableBodyDataComposition extends TdHTMLAttributes<HTMLTableDataCellElement> {
   children: ReactNode;
   className?: string;
+
 }
 
 export default function TableBodyData({

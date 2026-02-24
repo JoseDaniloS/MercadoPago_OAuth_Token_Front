@@ -5,6 +5,7 @@ import TableHeadData from "./TableHeadData";
 
 import TableRoot from "./TableRoot";
 import TableRow from "./TableRow";
+import TransactionRow from "./TransactionRow";
 
 export const Table = {
   Root: TableRoot,
@@ -16,5 +17,6 @@ export const Table = {
     Root: TableBody,
     Row: TableRow,
     Data: TableBodyData,
+    TransactionRow: TransactionRow
   },
 };

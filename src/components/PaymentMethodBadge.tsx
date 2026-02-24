@@ -1,11 +1,15 @@
 import { CreditCard, QrCode } from "lucide-react";
 
+interface PaymentMethodBadgeProps {
+  payment_method_id: string | undefined;
+}
+
 export default function PaymentMethodBadge({
   payment_method_id,
-}: {
-  payment_method_id: "pix" | "master";
-}) {
-  const icons = {
+}: PaymentMethodBadgeProps) {
+
+  if(!payment_method_id) return null;
+  const icons : Record<string, JSX.Element> = {
     pix: <QrCode />,
     master: <CreditCard />,
   };

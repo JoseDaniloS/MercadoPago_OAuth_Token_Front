@@ -1,17 +1,13 @@
-import { Download } from "lucide-react";
+import { ArrowUpDown, Download } from "lucide-react";
 import { Button } from "../components/Button";
-import StatusBadge from "../components/statusBadge";
 import { Table } from "../components/Table";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { fetchTransactionsWithPagination } from "../api/fetchTransactions";
 import { UserAmplify } from "./MercadoPagoConnect";
-import { truncateString } from "../utils/StringUtils";
-import { formatDate } from "../utils/DateUtils";
-import PaymentMethodBadge from "../components/PaymentMethodBadge";
-
+import { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
 export default function Transactions({ userCognito }: UserAmplify) {
   const [lastEvaluatedKey, setLastEvaluatedKey] = useState();
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState<PaymentResponse[]>([]);
 
   useEffect(() => {
     const fetchTransaction = async () => {
@@ -33,12 +29,14 @@ export default function Transactions({ userCognito }: UserAmplify) {
     fetchTransaction();
   }, []);
 
+
+
   return (
     <div className="w-full p-6 min-h-screen flex flex-col gap-5 overflow-x-hidden">
       <div className="flex justify-between md:max-h-14 max-md:flex-col max-md:gap-5">
         <div>
           <h1 className="titles">Transações</h1>
-          <p className="subtitles">
+          <p className="subtitles text-wrap">
             Visualize e gerencie todas as transações da sua conta.
           </p>
         </div>
@@ -51,69 +49,36 @@ export default function Transactions({ userCognito }: UserAmplify) {
       </div>
 
       <div className="max-md:overflow-x-scroll overflow-y-hidden border rounded-xl border-[#1E293B] w-full">
-        <Table.Root>
-          <Table.Head.Root>
-            <Table.Head.Data>ID da Transação</Table.Head.Data>
-            <Table.Head.Data>Cliente</Table.Head.Data>
-            <Table.Head.Data>Método</Table.Head.Data>
-            <Table.Head.Data>Valor</Table.Head.Data>
-            <Table.Head.Data>Status</Table.Head.Data>
-            <Table.Head.Data>Data</Table.Head.Data>
-            <Table.Head.Data></Table.Head.Data>
-          </Table.Head.Root>
-          <Table.Body.Root>
-            {transactions.map((transaction, index) => {
-              const { date, time } = formatDate(transaction?.date_created);
-              return (
-                <Table.Body.Row key={index}>
-                  <Table.Body.Data>
-                    <div className="font-medium text-white">
-                      {transaction?.id}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      API Ref: {truncateString(transaction.external_reference)}
-                    </div>
-                  </Table.Body.Data>
-                  <Table.Body.Data>
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-purple-600 text-white text-xs font-semibold">
-                        JD
-                      </div>
-                      <div>
-                        <div className="font-medium text-white">
-                          {transaction.payer.first_name || "Sem nome"}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {transaction.payer.email || "Sem Email"}
-                        </div>
-                      </div>
-                    </div>
-                  </Table.Body.Data>
-                  <Table.Body.Data>
-                    <span className="text-green-400 font-medium uppercase">
-                      <PaymentMethodBadge
-                        payment_method_id={transaction.payment_method_id}
-                      />
-                    </span>
-                  </Table.Body.Data>
-                  <Table.Body.Data>
-                    <span>R$ {transaction.transaction_amount}</span>
-                  </Table.Body.Data>
-                  <Table.Body.Data>
-                    <StatusBadge status={transaction.status} />
-                  </Table.Body.Data>
-                  <Table.Body.Data>
-                    <div>{date}</div>
-                    <div className="text-xs text-gray-500">{time}</div>
-                  </Table.Body.Data>
-                  <Table.Body.Data className="text-right">
-                    <button> ⋮</button>
-                  </Table.Body.Data>
-                </Table.Body.Row>
-              );
-            })}
-          </Table.Body.Root>
-        </Table.Root>
+        {transactions.length > 0 ? (
+          <Table.Root>
+            <Table.Head.Root>
+              <Table.Head.Data>ID da Transação</Table.Head.Data>
+              <Table.Head.Data>Cliente</Table.Head.Data>
+              <Table.Head.Data>Método</Table.Head.Data>
+              <Table.Head.Data>Valor</Table.Head.Data>
+              <Table.Head.Data>Status</Table.Head.Data>
+              <Table.Head.Data>Data</Table.Head.Data>
+              <Table.Head.Data></Table.Head.Data>
+            </Table.Head.Root>
+            <Table.Body.Root>
+              {transactions.map((transaction, index) => (
+                <Table.Body.TransactionRow key={index} transaction={transaction} />
+              ))}
+            </Table.Body.Root>
+          </Table.Root>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <ArrowUpDown className="text-text-gray w-7 h-7" />
+            </div>
+            <div className="text-center">
+              <p className="text-white font-semibold">Nenhuma transação encontrada</p>
+              <p className="text-text-gray text-sm mt-1">
+                Suas transações aparecerão aqui assim que forem realizadas.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
