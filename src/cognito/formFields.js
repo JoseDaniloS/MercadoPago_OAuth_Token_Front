@@ -31,6 +31,11 @@ export const formFields = {
       placeholder: "*********",
       order: 3,
     },
+    website: {
+      label: "WEBSITE (Site da sua empresa)",
+      placeholder: "https://www.seusite.com",
+      order: 4,
+    }
   },
 
   forceNewPassword: {

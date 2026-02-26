@@ -3,7 +3,7 @@ import { useClipboard } from "../hooks/useClipboard";
 import { ReactNode } from "react";
 
 interface CopyButtonProps {
-  value: string | number;
+  value?: string | number;
   className?: string;
   children?: ReactNode;
 }
@@ -14,6 +14,11 @@ export default function CopyButton({
   children,
 }: CopyButtonProps) {
   const { copy, copied } = useClipboard();
+
+  if (!value) {
+    console.error("CopyButton: 'value' prop is required");
+    return null
+  };
 
   return (
     <button

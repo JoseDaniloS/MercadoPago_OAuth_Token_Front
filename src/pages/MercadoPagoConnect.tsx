@@ -25,9 +25,10 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
   const CLIENT_ID = "1549445475571223";
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [oAuthData, setOAuthData] = useState<MercadoPagoIntegration | any>();
+  const [oAuthData, setOAuthData] = useState<MercadoPagoIntegration | null>(null);
 
   const { user, isLoading } = useAuth();
+
   useEffect(() => {
     if (user?.mp) {
       setOAuthData(user.mp);
@@ -45,38 +46,41 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
       try {
         const userId = userCognito?.userId;
         if (!userId) return;
-        if (user?.mp || isLoading) return;
+        if (isLoading) return;
         // Sem code → redireciona para o Mercado Pago autorizar
-        if (!code) {
+        if (!code && !user?.mp.access_token) {
           console.log("Redirecionando para Mercado Pago...");
           window.location.href = `https://auth.mercadopago.com.br/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${redirectUri}`;
           return;
         }
+        setLoading(true);
 
         // Tem code → faz o OAuth
-        setLoading(true);
         const response = await fetchOAuthMercadoPago(userId, code);
         if (response) setOAuthData(response);
       } catch (error) {
         console.log(error);
         setError(true);
       } finally {
-        setLoading(false);
+        if (user?.mp.access_token) {
+          setLoading(false)
+        }
       }
     };
 
     checkConnection();
   }, [code, redirectUri, userCognito, user, isLoading]);
-  if (loading || isLoading) {
+
+  console.log(isLoading, loading)
+  if (error) {
+    return <ErrorPage />;
+  }
+  if (isLoading || loading) {
     return <LoadingPage />;
   }
 
 
 
-  if (error) {
-    return <ErrorPage />;
-  }
- 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
       <div className="glass-card gap-3 max-w-xl p-10 flex flex-col items-center overflow-hidden justify-center text-white">
@@ -101,9 +105,9 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
               <input
                 className="w-full focus:outline-none"
                 readOnly
-                value={truncateString(oAuthData?.public_key, 30) || ""}
+                value={truncateString(oAuthData?.public_key, 30)}
               />
-              <CopyButton value={oAuthData?.public_key || ""} />
+              <CopyButton value={oAuthData?.public_key} />
             </div>
           </div>
 
@@ -131,9 +135,9 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
               <input
                 className="w-full focus:outline-none"
                 readOnly
-                value={truncateString(oAuthData?.refresh_token, 30) || ""}
+                value={truncateString(oAuthData?.refresh_token, 30)}
               />
-              <CopyButton value={oAuthData?.refresh_token || ""} />
+              <CopyButton value={oAuthData?.refresh_token} />
             </div>
           </div>
 
@@ -145,9 +149,9 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
               <input
                 className="w-full focus:outline-none"
                 readOnly
-                value={oAuthData?.merchant_id || ""}
+                value={oAuthData?.merchant_id}
               />
-              <CopyButton value={oAuthData?.merchant_id || ""} />
+              <CopyButton value={oAuthData?.merchant_id} />
             </div>
           </div>
 

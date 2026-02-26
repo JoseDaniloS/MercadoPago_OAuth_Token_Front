@@ -20,6 +20,7 @@ export function AuthProvider({
 }) {
   const [user, setUser] = useState<AuthUserDynamo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [mpConnected, setMpConnected] = useState(false);
 
   useEffect(() => {
     async function loadUser() {
@@ -28,8 +29,9 @@ export function AuthProvider({
       try {
         setIsLoading(true);
         const response = await getUser(userCognito.userId);
-        console.log("Usuário carregado:");
+        console.log("Usuário carregado:", response);
         setUser(response);
+        setMpConnected(response.mp.isConnected);
       } catch (error) {
         console.log("Erro ao carregar usuário:", error);
       } finally {
@@ -40,8 +42,16 @@ export function AuthProvider({
     loadUser();
   }, [userCognito?.userId]);
 
+  async function updateUser(data: Partial<AuthUserDynamo>) {
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, isLoading }}>
+    <AuthContext.Provider value={{ user, isLoading, mpConnected }}>
       {children}
     </AuthContext.Provider>
   );

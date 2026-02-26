@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { InputHTMLAttributes, useRef } from "react";
 import { useImageUpload } from "../utils/HandleImageChange";
 import LoadingPage from "./LoadingPage";
+import { AuthUserDynamo } from "../types/auth";
 
 
 
@@ -36,17 +37,17 @@ export default function ProfilePage() {
 
                 {/* Foto de perfil */}
                 <div className="glass-card flex max-md:flex-col gap-10 p-10 rounded-xl">
-                    <div className="w-32 h-32 rounded-2xl bg-white shrink-0 overflow-hidden">
+                    <div className="w-32 h-32 rounded-2xl bg-text-gray/20 shrink-0 overflow-hidden border-2 border-primary">
                         {imageUrl && (
                             <img
                                 src={imageUrl}
                                 alt="Foto de perfil"
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover "
                             />
                         )}
                     </div>
                     <div className="space-y-3">
-                        <h1 className="text-white font-bold text-xl">Sua Foto de Perfil</h1>
+                        <h1 className="text-white font-bold text-xl">LOGO da sua empresa</h1>
                         <p className="text-text-gray text-sm">
                             Formatos recomendados: JPG, PNG ou WEBP. <br />
                             Tamanho máximo de 2MB. Dimensões ideais 400x400px.
@@ -74,7 +75,7 @@ export default function ProfilePage() {
                         <div className="flex flex-col gap-4">
                             <Field label="Nome completo" placeholder="Seu nome" readOnly disabled value={user?.name} />
                             <Field label="E-mail profissional" type="email" readOnly disabled placeholder="seu@email.com" value={user?.email} />
-                            <Field label="Cargo" placeholder="Ex: Desenvolvedor" />
+
                         </div>
                     </div>
 
@@ -85,9 +86,9 @@ export default function ProfilePage() {
                             <h2 className="text-white font-bold">Dados Corporativos</h2>
                         </div>
                         <div className="flex flex-col gap-4">
-                            <Field label="Nome da empresa" type="text" placeholder="Chronos Pay Ltda" />
-                            <Field label="website oficial" type="text" placeholder="https://www.chronospay.com.br" />
-                            <Field label="setor de atuação" type="text" placeholder="Pagamentos Digitais" />
+                            <Field label="Nome da empresa" type="text" placeholder="Chronos Pay Ltda" value={user?.company.name || ""} />
+                            <Field label="website oficial" type="text" placeholder="https://www.chronospay.com.br" value={user?.company.website} />
+                            <Field label="setor de atuação" type="text" placeholder="Pagamentos Digitais" value={user?.company.industry || ""} />
                         </div>
                     </div>
 
