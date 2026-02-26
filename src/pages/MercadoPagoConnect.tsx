@@ -27,7 +27,7 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
   const [error, setError] = useState<boolean>(false);
   const [oAuthData, setOAuthData] = useState<MercadoPagoIntegration | null>(null);
 
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, mpConnected } = useAuth();
 
   useEffect(() => {
     if (user?.mp) {
@@ -47,8 +47,9 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
         const userId = userCognito?.userId;
         if (!userId) return;
         if (isLoading) return;
+        if (mpConnected) return;
         // Sem code → redireciona para o Mercado Pago autorizar
-        if (!code && !user?.mp.access_token) {
+        if (!code && !mpConnected) {
           console.log("Redirecionando para Mercado Pago...");
           window.location.href = `https://auth.mercadopago.com.br/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${redirectUri}`;
           return;
@@ -62,20 +63,17 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
         console.log(error);
         setError(true);
       } finally {
-        if (user?.mp.access_token) {
           setLoading(false)
-        }
       }
     };
 
     checkConnection();
   }, [code, redirectUri, userCognito, user, isLoading]);
 
-  console.log(isLoading, loading)
   if (error) {
     return <ErrorPage />;
   }
-  if (isLoading || loading) {
+  if (isLoading || loading ) {
     return <LoadingPage />;
   }
 

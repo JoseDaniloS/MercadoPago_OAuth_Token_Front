@@ -9,7 +9,6 @@ import LoadingPage from "../pages/LoadingPage";
 import { truncateString } from "../utils/StringUtils";
 import { AnimatePresence, motion } from "motion/react";
 import { NavLink } from "../components/NavLinks";
-import IsMpConnected from "../components/isMpConnected";
 
 interface HeaderDashboardProps {
   userCognito?: AuthUser;
