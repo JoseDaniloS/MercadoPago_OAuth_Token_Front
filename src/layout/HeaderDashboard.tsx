@@ -36,7 +36,7 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
         <div className="p-2 flex gap-2 items-center font-bold uppercase text-xs bg-primary/20 border text-primary border-primary/50 rounded">
           <Clock />
         </div>
-        <p className="uppercase text-xl max-md:text-[16px] text-slate-100 font-extrabold">
+        <p className="uppercase text-xl max-md:text-md text-slate-100 font-extrabold">
           CHRONOS<span className="text-primary">PAY</span>
         </p>
         <div className="flex gap-10 max-md:hidden px-10">

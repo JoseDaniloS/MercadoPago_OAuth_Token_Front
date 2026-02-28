@@ -108,34 +108,16 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
               <CopyButton value={oAuthData?.public_key} />
             </div>
           </div>
-
-          {/* Access Token */}
           <div className="w-full">
-            <TextUppercase className="text-primary">ACCESS TOKEN</TextUppercase>
+            <TextUppercase className="text-primary">USER ID</TextUppercase>
             <div className="inputs flex gap-3 hover:bg-primary/20 transition-all duration-200">
               <KeyRound />
               <input
                 className="w-full focus:outline-none"
                 readOnly
-                value={truncateString(oAuthData?.access_token, 30)}
+                value={userCognito?.userId}
               />
-              <CopyButton value={oAuthData?.access_token} />
-            </div>
-          </div>
-
-          {/* Refresh Token */}
-          <div className="w-full">
-            <TextUppercase className="text-primary">
-              REFRESH TOKEN
-            </TextUppercase>
-            <div className="inputs flex gap-3 hover:bg-primary/20 transition-all duration-200">
-              <KeyRound />
-              <input
-                className="w-full focus:outline-none"
-                readOnly
-                value={truncateString(oAuthData?.refresh_token, 30)}
-              />
-              <CopyButton value={oAuthData?.refresh_token} />
+              <CopyButton value={userCognito?.userId} />
             </div>
           </div>
 

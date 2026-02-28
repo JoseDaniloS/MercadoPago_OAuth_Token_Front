@@ -1,4 +1,4 @@
-import { ArrowUpDown, Download } from "lucide-react";
+import { ArrowUpDown, Download, LoaderCircleIcon } from "lucide-react";
 import { Button } from "../components/Button";
 import { Table } from "../components/Table";
 import { useEffect, useState } from "react";
@@ -8,14 +8,16 @@ import { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
 export default function Transactions({ userCognito }: UserAmplify) {
   const [lastEvaluatedKey, setLastEvaluatedKey] = useState();
   const [transactions, setTransactions] = useState<PaymentResponse[]>([]);
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const fetchTransaction = async () => {
       try {
+        setLoading(true)
         console.log("Buscando transações para o usuário:", userCognito?.userId);
         const response = await fetchTransactionsWithPagination(
           userCognito?.userId,
-          1,
+          10,
           lastEvaluatedKey,
         );
         if (response.LastEvaluatedKey)
@@ -24,6 +26,9 @@ export default function Transactions({ userCognito }: UserAmplify) {
         setTransactions(response.Items);
       } catch (error) {
         console.log(error);
+      }
+      finally {
+        setLoading(false)
       }
     };
     fetchTransaction();
@@ -66,7 +71,15 @@ export default function Transactions({ userCognito }: UserAmplify) {
               ))}
             </Table.Body.Root>
           </Table.Root>
-        ) : (
+        ) : loading ? <div className="flex flex-col items-center justify-center py-20 gap-4">
+          <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+            <LoaderCircleIcon className="text-text-gray animate-spin w-7 h-7" />
+          </div>
+          <div className="text-center">
+            <p className="text-white font-semibold">Carregando...</p>
+
+          </div>
+        </div> : (
           <div className="flex flex-col items-center justify-center py-20 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
               <ArrowUpDown className="text-text-gray w-7 h-7" />

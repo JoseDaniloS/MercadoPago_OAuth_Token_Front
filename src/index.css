@@ -4,6 +4,22 @@ body {
   font-family: "Inter", sans-serif;
   background-color: var(--color-midnight-dark);
   color: var(--color-text-gray);
+  
+}
+
+/* Chrome, Safari e Edge */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+.scrollbar-hidden {
+  scrollbar-width: none;
+}
+
+/* IE */
+.scrollbar-hidden {
+  -ms-overflow-style: none;
 }
 
 .tech-grid {
@@ -39,12 +55,14 @@ body {
   /* 🔤 Fonts */
   --font-display: "Roboto", sans-serif;
   --font-body: "Inter", sans-serif;
-
+  --text-md: 16px;
   /* 🧩 Backgrounds */
   --background-image-grid-pattern:
     linear-gradient(to right, #1e293b 1px, transparent 1px),
     linear-gradient(to bottom, #1e293b 1px, transparent 1px);
 }
+
+
 
 @layer components {
   .inputs {
