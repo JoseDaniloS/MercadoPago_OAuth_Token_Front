@@ -1,39 +1,31 @@
-import { ArrowUpDown, Download, LoaderCircleIcon } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpDown, Download, LoaderCircleIcon } from "lucide-react";
 import { Button } from "../components/Button";
 import { Table } from "../components/Table";
-import { useEffect, useState } from "react";
-import { fetchTransactionsWithPagination } from "../api/fetchTransactions";
+
 import { UserAmplify } from "./MercadoPagoConnect";
-import { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
+import { useTransactions } from "../hooks/useTransactions";
+import { useState } from "react";
 export default function Transactions({ userCognito }: UserAmplify) {
-  const [lastEvaluatedKey, setLastEvaluatedKey] = useState();
-  const [transactions, setTransactions] = useState<PaymentResponse[]>([]);
-  const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() => {
-    const fetchTransaction = async () => {
-      try {
-        setLoading(true)
-        console.log("Buscando transações para o usuário:", userCognito?.userId);
-        const response = await fetchTransactionsWithPagination(
-          userCognito?.userId,
-          10,
-          lastEvaluatedKey,
-        );
-        if (response.LastEvaluatedKey)
-          setLastEvaluatedKey(response.LastEvaluatedKey);
+  const [page, setPage] = useState(1);
 
-        setTransactions(response.Items);
-      } catch (error) {
-        console.log(error);
-      }
-      finally {
-        setLoading(false)
-      }
-    };
-    fetchTransaction();
-  }, []);
+  const { data, isLoading, isFetching, } = useTransactions({
+    userId: userCognito?.userId,
+    page,
+    pageSize: 1,
+  });
 
+  const transactions = data?.Items ?? [];
+  const hasNextPage = !!data?.LastEvaluatedKey;
+  const hasPreviousPage = page > 1;
+  const isEmpity = transactions.length === 0 && !isLoading
+
+  const nextPage = () => {
+    if (hasNextPage) setPage((prev) => prev + 1);
+  };
+  const previousPage = () => {
+    if (hasPreviousPage) setPage((prev) => prev - 1);
+  };
 
 
   return (
@@ -45,16 +37,16 @@ export default function Transactions({ userCognito }: UserAmplify) {
             Visualize e gerencie todas as transações da sua conta.
           </p>
         </div>
-        <div className="flex gap-3">
+        {/* <div className="flex gap-3">
           <Button.Root className="text-charcoal">
             <Button.Icon className="text-charcoal" icon={Download} />
             Exportar CSV
           </Button.Root>
-        </div>
+        </div> */}
       </div>
 
       <div className="max-md:overflow-x-scroll overflow-y-hidden border rounded-xl border-[#1E293B] w-full">
-        {transactions.length > 0 ? (
+        {!isEmpity &&
           <Table.Root>
             <Table.Head.Root>
               <Table.Head.Data>ID da Transação</Table.Head.Data>
@@ -71,15 +63,20 @@ export default function Transactions({ userCognito }: UserAmplify) {
               ))}
             </Table.Body.Root>
           </Table.Root>
-        ) : loading ? <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-            <LoaderCircleIcon className="text-text-gray animate-spin w-7 h-7" />
-          </div>
-          <div className="text-center">
-            <p className="text-white font-semibold">Carregando...</p>
+        }
 
+        {isLoading &&
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <LoaderCircleIcon className="text-text-gray animate-spin w-7 h-7" />
+            </div>
+            <div className="text-center">
+              <p className="text-white font-semibold">Carregando...</p>
+
+            </div>
           </div>
-        </div> : (
+        }
+        {isEmpity &&
           <div className="flex flex-col items-center justify-center py-20 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
               <ArrowUpDown className="text-text-gray w-7 h-7" />
@@ -91,7 +88,20 @@ export default function Transactions({ userCognito }: UserAmplify) {
               </p>
             </div>
           </div>
-        )}
+        }
+      </div>
+
+
+      <div className="flex gap-5 items-center max-md:justify-between">
+        <p>{transactions.length} Item | Página {page}</p>
+        <div className="flex gap-2">
+          <Button.Root className="p-2" disabled={!hasPreviousPage} onClick={previousPage}>
+            <Button.Icon icon={ArrowLeft} />
+          </Button.Root>
+          {!isEmpity && <Button.Root className="p-2" onClick={nextPage}>
+            <Button.Icon icon={ArrowRight} />
+          </Button.Root>}
+        </div>
       </div>
     </div>
   );

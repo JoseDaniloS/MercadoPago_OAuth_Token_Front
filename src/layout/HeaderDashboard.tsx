@@ -40,9 +40,9 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
           CHRONOS<span className="text-primary">PAY</span>
         </p>
         <div className="flex gap-10 max-md:hidden px-10">
-          <NavLink path="/dashboard" label="Dashboard" />
+          {/* <NavLink path="/dashboard" label="Dashboard" /> */}
           <NavLink path="/transactions" label="Transações" />
-          <NavLink path="/reports" label="Relatórios" />
+          {/* <NavLink path="/reports" label="Relatórios" /> */}
         </div>
       </div>
 
@@ -73,7 +73,7 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -8 }}
                 transition={{ duration: 0.15, ease: "easeOut" }}
-                className="absolute right-0 top-12 rounded-2xl text-start flex flex-col gap-3 p-5 min-w-64 glass-card text-white z-20">
+                className="absolute right-0 top-12 rounded-2xl backdrop-blur-md text-start flex flex-col gap-3 p-5 min-w-64 glass-card text-white z-20">
                 <div className="w-full flex items-center gap-3">
                   <div className={`rounded-full cursor-pointer overflow-hidden shrink-0 bg-primary/30 h-10 w-10 flex items-center justify-center`}>
                     {user?.company.picture_url ? (
@@ -105,7 +105,7 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
                   </Button.Root>
                 </div>
 
-                <div className="w-full border-t border-b border-text-gray/20 py-3 flex flex-col gap-3">
+                {/* <div className="w-full border-t border-b border-text-gray/20 py-3 flex flex-col gap-3">
                   <button
                     onClick={() => handleNavigate("/profile")}
                     className="text-text-gray w-full flex items-center cursor-pointer hover:bg-text-gray/20 transition-all duration-200 gap-2 px-3 py-2.5 font-bold rounded-md hover:scale-105"
@@ -121,7 +121,7 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
                     <Settings size={16} />
                     Configurações
                   </button>
-                </div>
+                </div> */}
 
                 <button
                   onClick={signOut}

@@ -9,8 +9,11 @@ import { formFields } from "./cognito/formFields.js";
 import HeaderDashboard from "./layout/HeaderDashboard";
 import { AuthProvider } from "./context/AuthContext";
 import AppRoutes from "./routes/routes";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 Amplify.configure(outputs);
+
+const queryClient = new QueryClient()
 
 export default function App() {
   return (
@@ -18,16 +21,18 @@ export default function App() {
       <Authenticator
         className="p-6"
         formFields={formFields}
-        socialProviders={["google"]}
+        // socialProviders={["google"]}
         components={components}
       >
         {({ user, signOut }) => (
           <AuthProvider userCognito={user}>
             <BrowserRouter>
-              <div className="w-full">
-                <HeaderDashboard signOut={signOut} userCognito={user} />
-                <AppRoutes user={user} signOut={signOut} />
-              </div>
+              <QueryClientProvider client={queryClient}>
+                <div className="w-full">
+                  <HeaderDashboard signOut={signOut} userCognito={user} />
+                  <AppRoutes user={user} signOut={signOut} />
+                </div>
+              </QueryClientProvider>
             </BrowserRouter>
           </AuthProvider>
         )}

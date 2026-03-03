@@ -1,12 +1,10 @@
 import { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
 import { Table } from ".";
 import { formatDate } from "../../utils/DateUtils";
-import { truncateString } from "../../utils/StringUtils";
+import { getInitialChar, truncateString } from "../../utils/StringUtils";
 import PaymentMethodBadge from "../PaymentMethodBadge";
 import StatusBadge from "../statusBadge";
 import { useState } from "react";
-
-import { errorMap, stylesStatus } from "../../constants/mpErrorTranslate";
 import { AnimatePresence } from "motion/react";
 import TransactionModal from "../TransactionModal";
 
@@ -16,6 +14,9 @@ interface TransactionRowProps {
 export default function TransactionRow({ transaction }: TransactionRowProps) {
     const { date, time } = formatDate(transaction?.date_created);
     const [show, setShow] = useState<boolean>(false)
+    const initials = `${getInitialChar(transaction.payer?.first_name)}${getInitialChar(transaction.payer?.last_name)}`.toUpperCase() || "?";
+    const payerName = `${transaction.payer?.first_name || ""} ${transaction.payer?.last_name || ""}`.trim();
+
     return (
         <>
             <Table.Body.Row onClick={() => setShow(!show)}>
@@ -30,11 +31,11 @@ export default function TransactionRow({ transaction }: TransactionRowProps) {
                 <Table.Body.Data>
                     <div className="flex items-center gap-3">
                         <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-purple-600 text-white text-xs font-semibold">
-                            JD
+                            {initials}
                         </div>
                         <div>
                             <div className="font-medium text-white">
-                                {`${transaction.payer?.first_name} ${transaction.payer?.last_name}`}
+                                {payerName}
                             </div>
                             <div className="text-xs text-gray-500">
                                 {transaction?.payer?.email || "Sem Email"}
@@ -48,7 +49,6 @@ export default function TransactionRow({ transaction }: TransactionRowProps) {
                             payment_method_id={transaction?.payment_method_id}
                         />
                     </span>
-                    <p>{ }</p>
                 </Table.Body.Data>
                 <Table.Body.Data>
                     <span>R$ {transaction.transaction_amount}</span>

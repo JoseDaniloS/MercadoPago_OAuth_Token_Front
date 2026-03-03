@@ -18,7 +18,7 @@ export default function AppRoutes({
 
   useEffect(() => {
     if (user && location.pathname === "/") {
-      navigate("/dashboard", { replace: true });
+      navigate("/transactions", { replace: true });
     }
   }, [user, navigate]);
 
@@ -26,7 +26,7 @@ export default function AppRoutes({
 
   return (
     <Routes>
-      <Route path="/dashboard" element={<Dashboard />} />
+      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
       <Route
         path="/oauth/mercadopago"
         element={<MercadoPagoConnect userCognito={user} />}
@@ -35,10 +35,10 @@ export default function AppRoutes({
         path="/transactions"
         element={<Transactions userCognito={user} />}
       />
-      <Route path="/reports" element={<div>Relatórios (em breve)</div>} />
+      {/* <Route path="/reports" element={<div>Relatórios (em breve)</div>} />
       <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/settings" element={<div>Configurações (em breve)</div>} />
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/settings" element={<div>Configurações (em breve)</div>} /> */}
+      <Route path="*" element={<Navigate to="/transactions" replace />} />
     </Routes>
   );
 }

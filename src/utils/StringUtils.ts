@@ -24,3 +24,7 @@ export function formatDocument(value?: string | number): string {
         .replace(/\.(\d{3})(\d)/, ".$1/$2")
         .replace(/(\d{4})(\d)/, "$1-$2");
 }
+
+export function getInitialChar(value?: string) {
+    return value?.slice(0, 1) || "?"
+}

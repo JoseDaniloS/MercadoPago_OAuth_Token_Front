@@ -16,7 +16,6 @@ export default function CopyButton({
   const { copy, copied } = useClipboard();
 
   if (!value) {
-    console.error("CopyButton: 'value' prop is required");
     return null
   };
 

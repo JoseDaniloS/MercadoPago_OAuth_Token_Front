@@ -42,7 +42,7 @@ export default function TransactionModal({ transaction, setShow }: TransactionMo
                         <TextUppercase className="text-md">VALOR DA TRANSAÇÃO</TextUppercase>
                         <span className="text-4xl font-extrabold">R$ {transaction.transaction_amount}</span>
                         <p className="text-text-gray text-md">{transaction.description}</p>
-                        <p className={`${stylesStatus[status]} px-3 py-1 rounded-full border text-md`}>
+                        <p className={`${stylesStatus[status]} px-3 py-1 rounded-full text-wrap border text-md`}>
                             {errorMap[status_detail]}
                         </p>
                     </div>
