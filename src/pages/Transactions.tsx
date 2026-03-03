@@ -9,10 +9,10 @@ export default function Transactions({ userCognito }: UserAmplify) {
 
   const [page, setPage] = useState(1);
 
-  const { data, isLoading, isFetching, } = useTransactions({
+  const { data, isLoading } = useTransactions({
     userId: userCognito?.userId,
     page,
-    pageSize: 1,
+    pageSize: 10,
   });
 
   const transactions = data?.Items ?? [];
