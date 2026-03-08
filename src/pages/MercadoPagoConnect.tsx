@@ -1,9 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import {
-  fetchOAuthMercadoPago,
-  getOAuthMercadoPago,
-} from "../api/fetchOAuthMercadoPago";
+import { fetchOAuthMercadoPago } from "../api/fetchOAuthMercadoPago";
 import TextUppercase from "../components/TextUppercase";
 import { ArrowRight, CheckCircle, Info, KeyRound } from "lucide-react";
 import CopyButton from "../components/copyButton";
@@ -36,10 +33,7 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
   }, [user]);
 
   const navigate = useNavigate();
-  const redirectUri = useMemo(
-    () => `${window.location.origin}/oauth/mercadopago`,
-    [],
-  );
+  const redirectUri = useMemo(() => `${window.location.origin}/oauth/mercadopago`, []);
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -63,35 +57,27 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
         console.log(error);
         setError(true);
       } finally {
-          setLoading(false)
+        setLoading(false);
       }
     };
 
     checkConnection();
-  }, [code, redirectUri, userCognito, user, isLoading]);
+  }, [code, redirectUri, userCognito, user, isLoading, mpConnected]);
 
   if (error) {
     return <ErrorPage />;
   }
-  if (isLoading || loading ) {
+  if (isLoading || loading) {
     return <LoadingPage />;
   }
-
-
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
       <div className="glass-card gap-3 max-w-xl p-10 flex flex-col items-center overflow-hidden justify-center text-white">
-        <CheckCircle
-          className="text-primary drop-shadow-[0_0_5px_rgba(212,175,55)]"
-          size={32}
-        />
-        <h1 className="text-primary font-bold text-2xl">
-          Conta conectada com sucesso
-        </h1>
+        <CheckCircle className="text-primary drop-shadow-[0_0_5px_rgba(212,175,55)]" size={32} />
+        <h1 className="text-primary font-bold text-2xl">Conta conectada com sucesso</h1>
         <p className="text-center text-sm text-text-gray">
-          Sua integração com o Mercado Pago está ativa. As credenciais abaixo
-          foram geradas e estão prontas para uso.
+          Sua integração com o Mercado Pago está ativa. As credenciais abaixo foram geradas e estão prontas para uso.
         </p>
 
         <div className="w-full flex flex-col gap-5">
@@ -100,11 +86,7 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
             <TextUppercase className="text-primary">PUBLIC KEY</TextUppercase>
             <div className="inputs flex gap-3 hover:bg-primary/20 transition-all duration-200">
               <KeyRound />
-              <input
-                className="w-full focus:outline-none"
-                readOnly
-                value={truncateString(oAuthData?.public_key, 30)}
-              />
+              <input className="w-full focus:outline-none" readOnly value={truncateString(oAuthData?.public_key, 30)} />
               <CopyButton value={oAuthData?.public_key} />
             </div>
           </div>
@@ -112,11 +94,7 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
             <TextUppercase className="text-primary">USER ID</TextUppercase>
             <div className="inputs flex gap-3 hover:bg-primary/20 transition-all duration-200">
               <KeyRound />
-              <input
-                className="w-full focus:outline-none"
-                readOnly
-                value={userCognito?.userId}
-              />
+              <input className="w-full focus:outline-none" readOnly value={userCognito?.userId} />
               <CopyButton value={userCognito?.userId} />
             </div>
           </div>
@@ -126,11 +104,7 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
             <TextUppercase className="text-primary">MERCHANT ID</TextUppercase>
             <div className="inputs flex gap-3 hover:bg-primary/20 transition-all duration-200">
               <KeyRound />
-              <input
-                className="w-full focus:outline-none"
-                readOnly
-                value={oAuthData?.merchant_id}
-              />
+              <input className="w-full focus:outline-none" readOnly value={oAuthData?.merchant_id} />
               <CopyButton value={oAuthData?.merchant_id} />
             </div>
           </div>
@@ -138,20 +112,15 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
           <div className="bg-primary/20 flex gap-2 border-primary/30 border p-3 rounded-md">
             <Info size={20} className="text-primary" />
             <div>
-              <p className="text-primary font-bold text-sm">
-                Nota de Segurança
-              </p>
+              <p className="text-primary font-bold text-sm">Nota de Segurança</p>
               <p className="text-xs">
-                Estas credenciais dão acesso sensível à sua conta. Armazene-as
-                em local seguro e nunca as compartilhe publicamente.
+                Estas credenciais dão acesso sensível à sua conta. Armazene-as em local seguro e nunca as compartilhe
+                publicamente.
               </p>
             </div>
           </div>
 
-          <Button.Root
-            onClick={() => navigate("/dashboard")}
-            className="justify-center text-charcoal"
-          >
+          <Button.Root onClick={() => navigate("/dashboard")} className="justify-center text-charcoal">
             Voltar para o Dashboard
             <Button.Icon className="text-charcoal w-4" icon={ArrowRight} />
           </Button.Root>

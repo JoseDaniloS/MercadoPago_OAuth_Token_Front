@@ -2,11 +2,9 @@ import { fetchAuthSession } from "aws-amplify/auth";
 
 export async function getCognitoIdToken(): Promise<string> {
   const session = await fetchAuthSession();
+  const idToken = session.tokens?.idToken?.toString();
 
-  const accessToken = session.tokens?.idToken?.toString();
+  if (!idToken) throw new Error("ID Token não encontrado");
 
-  if (!accessToken) {
-    throw new Error("Access token não encontrado");
-  }
-  return accessToken;
+  return idToken;
 }

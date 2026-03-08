@@ -1,7 +1,5 @@
 import { labels, stylesStatus } from "../constants/constants";
 
-
-
 type Status = keyof typeof stylesStatus;
 
 export default function StatusBadge({ status }: { status?: string }) {
@@ -9,9 +7,5 @@ export default function StatusBadge({ status }: { status?: string }) {
 
   const key = status as Status;
 
-  return (
-    <span className={`px-3 py-1 text-xs rounded-full border ${stylesStatus[key]}`}>
-      {labels[key]}
-    </span>
-  );
+  return <span className={`px-3 py-1 text-xs rounded-full border ${stylesStatus[key]}`}>{labels[key]}</span>;
 }

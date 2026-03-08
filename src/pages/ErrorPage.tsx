@@ -8,8 +8,7 @@ export default function ErrorPage() {
         <h1 className="text-6xl font-bold text-primary drop-shadow-md">404</h1>
         <h2 className="text-2xl font-semibold mt-4">Oops! Algo deu errado.</h2>
         <p className="text-text-gray mt-2">
-          A página que você está tentando acessar não existe ou ocorreu um erro
-          inesperado.
+          A página que você está tentando acessar não existe ou ocorreu um erro inesperado.
         </p>
 
         <Button.Root

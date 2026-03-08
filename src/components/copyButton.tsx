@@ -8,22 +8,15 @@ interface CopyButtonProps {
   children?: ReactNode;
 }
 
-export default function CopyButton({
-  value,
-  className,
-  children,
-}: CopyButtonProps) {
+export default function CopyButton({ value, className, children }: CopyButtonProps) {
   const { copy, copied } = useClipboard();
 
   if (!value) {
-    return null
-  };
+    return null;
+  }
 
   return (
-    <button
-      onClick={() => copy(value)}
-      className={`cursor-pointer transition ${className}`}
-    >
+    <button onClick={() => copy(value)} className={`cursor-pointer transition ${className}`}>
       {copied ? <CheckCircle size={18} /> : <Copy size={18} />}
       {children}
     </button>

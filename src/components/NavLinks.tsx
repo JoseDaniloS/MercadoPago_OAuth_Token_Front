@@ -18,7 +18,7 @@ export function NavLink({ path, label }: NavLinkProps) {
     <button
       onClick={handleNavigate}
       className={`cursor-pointer font-extrabold transition-colors duration-200 ${
-        isActive ? "text-primary border-t" : "text-text-gray hover:text-white " 
+        isActive ? "text-primary border-t" : "text-text-gray hover:text-white "
       }`}
     >
       {label}

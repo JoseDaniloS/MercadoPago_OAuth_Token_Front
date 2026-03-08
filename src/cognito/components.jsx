@@ -1,12 +1,4 @@
-import {
-  useTheme,
-  View,
-  Text,
-  Heading,
-  useAuthenticator,
-  Button,
-  Divider,
-} from "@aws-amplify/ui-react";
+import { useTheme, View, Text, Heading, useAuthenticator, Button, Divider } from "@aws-amplify/ui-react";
 
 const components = {
   Footer() {
@@ -14,9 +6,7 @@ const components = {
 
     return (
       <View textAlign="center" padding={tokens.space.large}>
-        <Text color={tokens.colors.neutral[80]}>
-          &copy; Chronos Pay. Todos os direitos reservados.
-        </Text>
+        <Text color={tokens.colors.neutral[80]}>&copy; Chronos Pay. Todos os direitos reservados.</Text>
       </View>
     );
   },
@@ -26,11 +16,7 @@ const components = {
       const { tokens } = useTheme();
 
       return (
-        <Heading
-          padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-          fontSize={24}
-          level={3}
-        >
+        <Heading padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`} fontSize={24} level={3}>
           Bem-vindo de volta
           <Text
             style={{
@@ -114,10 +100,7 @@ const components = {
       const { tokens } = useTheme();
 
       return (
-        <Heading
-          padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-          level={3}
-        >
+        <Heading padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`} level={3}>
           Criar sua conta
           <Text
             style={{
@@ -188,10 +171,7 @@ const components = {
     Header() {
       const { tokens } = useTheme();
       return (
-        <Heading
-          padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-          level={3}
-        >
+        <Heading padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`} level={3}>
           Confirme suas informações
         </Heading>
       );
@@ -205,10 +185,7 @@ const components = {
     Header() {
       const { tokens } = useTheme();
       return (
-        <Heading
-          padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-          level={3}
-        >
+        <Heading padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`} level={3}>
           Configuração do TOTP
         </Heading>
       );
@@ -222,10 +199,7 @@ const components = {
     Header() {
       const { tokens } = useTheme();
       return (
-        <Heading
-          padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-          level={3}
-        >
+        <Heading padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`} level={3}>
           Confirme seu login
         </Heading>
       );
@@ -249,10 +223,7 @@ const components = {
     Header() {
       const { tokens } = useTheme();
       return (
-        <Heading
-          padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-          level={3}
-        >
+        <Heading padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`} level={3}>
           Confirme nova senha
         </Heading>
       );

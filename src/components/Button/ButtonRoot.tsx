@@ -6,11 +6,7 @@ interface ButtonRootComposition extends ButtonHTMLAttributes<HTMLButtonElement> 
   className?: string;
 }
 
-export default function ButtonRoot({
-  className,
-  children,
-  ...rest
-}: ButtonRootComposition) {
+export default function ButtonRoot({ className, children, ...rest }: ButtonRootComposition) {
   return (
     <button
       className={twMerge(

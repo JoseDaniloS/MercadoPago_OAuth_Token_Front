@@ -6,17 +6,9 @@ interface TableHeadComposition {
   className?: string;
 }
 
-export default function TableHead({
-  children,
-  className,
-}: TableHeadComposition) {
+export default function TableHead({ children, className }: TableHeadComposition) {
   return (
-    <thead
-      className={twMerge(
-        "text-text-gray rounded-xl text-left text-nowrap uppercase text-xs",
-        className,
-      )}
-    >
+    <thead className={twMerge("text-text-gray rounded-xl text-left text-nowrap uppercase text-xs", className)}>
       <tr>{children}</tr>
     </thead>
   );

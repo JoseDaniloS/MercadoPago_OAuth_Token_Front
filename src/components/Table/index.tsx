@@ -17,6 +17,6 @@ export const Table = {
     Root: TableBody,
     Row: TableRow,
     Data: TableBodyData,
-    TransactionRow: TransactionRow
+    TransactionRow: TransactionRow,
   },
 };

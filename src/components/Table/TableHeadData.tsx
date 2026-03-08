@@ -6,9 +6,6 @@ interface TableHeadDataComposition {
   className?: string;
 }
 
-export default function TableHeadData({
-  children,
-  className,
-}: TableHeadDataComposition) {
+export default function TableHeadData({ children, className }: TableHeadDataComposition) {
   return <th className={twMerge("px-6 py-4", className)}>{children}</th>;
 }

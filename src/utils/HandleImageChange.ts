@@ -35,7 +35,7 @@ export function useImageUpload(): UseImageUploadReturn {
 
     const reader = new FileReader();
     reader.onload = ({ target }) => {
-      setImageBase64(target?.result as string ?? null);
+      setImageBase64((target?.result as string) ?? null);
     };
     reader.onerror = () => setError("Erro ao importar imagem!");
     reader.readAsDataURL(file);

@@ -1,4 +1,4 @@
-import { CircleUser, Clock, Link2, LogOut, Settings } from "lucide-react";
+import { CircleUser, Clock, Link2, LogOut } from "lucide-react";
 import { memo, useState } from "react";
 import { Button } from "../components/Button";
 import TextUppercase from "../components/TextUppercase";
@@ -54,13 +54,11 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
             onClick={() => setOpen((v) => !v)}
             className={`rounded-full cursor-pointer overflow-hidden shrink-0 bg-gray-700 h-10 w-10 flex items-center justify-center`}
           >
-            <div className={`${!mpConnected && "bg-red-400 animate-ping"} w-2 h-2 rounded-full absolute bg-green-500 top-0 left-0`}></div>
+            <div
+              className={`${!mpConnected && "bg-red-400 animate-ping"} w-2 h-2 rounded-full absolute bg-green-500 top-0 left-0`}
+            ></div>
             {user?.company.picture_url ? (
-              <img
-                src={user?.company.picture_url}
-                alt="Foto de perfil"
-                className="w-full h-full object-cover"
-              />
+              <img src={user?.company.picture_url} alt="Foto de perfil" className="w-full h-full object-cover" />
             ) : (
               <CircleUser size={20} className="text-amber-400" />
             )}
@@ -73,9 +71,12 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -8 }}
                 transition={{ duration: 0.15, ease: "easeOut" }}
-                className="absolute right-0 top-12 rounded-2xl backdrop-blur-md text-start flex flex-col gap-3 p-5 min-w-64 glass-card text-white z-20">
+                className="absolute right-0 top-12 rounded-2xl backdrop-blur-md text-start flex flex-col gap-3 p-5 min-w-64 glass-card text-white z-20"
+              >
                 <div className="w-full flex items-center gap-3">
-                  <div className={`rounded-full cursor-pointer overflow-hidden shrink-0 bg-primary/30 h-10 w-10 flex items-center justify-center`}>
+                  <div
+                    className={`rounded-full cursor-pointer overflow-hidden shrink-0 bg-primary/30 h-10 w-10 flex items-center justify-center`}
+                  >
                     {user?.company.picture_url ? (
                       <img
                         src={user?.company.picture_url}
@@ -99,9 +100,7 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
                     className={`py-3 text-midnight-dark px-2.5 ${!mpConnected && "border-red-400 text-red-400 bg-red-400/20 border hover:bg-red-400/30 hover:scale-105"}`}
                   >
                     <Button.Icon icon={Link2} className={`${!mpConnected && "text-red-400"}`} />
-                    {mpConnected
-                      ? "Ver Credenciais Mercado Pago"
-                      : "Conectar Mercado Pago"}
+                    {mpConnected ? "Ver Credenciais Mercado Pago" : "Conectar Mercado Pago"}
                   </Button.Root>
                 </div>
 

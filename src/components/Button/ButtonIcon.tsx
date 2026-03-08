@@ -6,9 +6,6 @@ interface ButtonIconComposition {
   className?: string;
 }
 
-export default function ButtonIcon({
-  icon: Icon,
-  className,
-}: ButtonIconComposition) {
+export default function ButtonIcon({ icon: Icon, className }: ButtonIconComposition) {
   return <Icon className={twMerge("text-black min-w-4", className)} />;
 }
