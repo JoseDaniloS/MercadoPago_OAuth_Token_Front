@@ -1,40 +1,54 @@
-import { Building2, Upload } from "lucide-react";
+import { Building2, Save, Upload } from "lucide-react";
 import { Button } from "../components/Button";
-import TextUppercase from "../components/TextUppercase";
 import { useAuth } from "../context/AuthContext";
-import { InputHTMLAttributes, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useImageUpload } from "../utils/HandleImageChange";
 import LoadingPage from "./LoadingPage";
-
-function Field({
-  label,
-  type = "text",
-  placeholder,
-  ...rest
-}: InputHTMLAttributes<HTMLInputElement> & { label: string }) {
-  return (
-    <div className="flex flex-col gap-1.5">
-      <TextUppercase>{label}</TextUppercase>
-      <input {...rest} type={type} placeholder={placeholder} className="inputs text-white focus:outline-none" />
-    </div>
-  );
-}
+import ButtonIcon from "../components/Button/ButtonIcon";
+import { useForm } from "react-hook-form";
+import { AuthUserDynamo } from "../types/auth";
+import InputField from "../components/InputField";
 
 export default function ProfilePage() {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, updateUser } = useAuth();
   const { handleImageChange, imageUrl } = useImageUpload();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isDirty, isSubmitting },
+  } = useForm<AuthUserDynamo>();
+
+  useEffect(() => {
+    if (user) {
+      reset({
+        company: {
+          name: user.company?.name || "",
+          website: user.company?.website || "",
+          industry: user.company?.industry || "",
+        },
+      });
+    }
+  }, [user, reset]);
+
+  async function onSubmit(data: AuthUserDynamo) {
+    console.log(data);
+    updateUser?.(data);
+  }
+
   if (isLoading) {
     return <LoadingPage />;
   }
   return (
     <div className="min-h-screen">
-      <div className="max-w-6xl flex flex-col gap-10 p-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="max-w-6xl flex flex-col gap-10 p-6">
         <input type="file" ref={inputRef} accept="image/*" className="hidden" onChange={handleImageChange} />
 
         {/* Foto de perfil */}
         <div className="glass-card flex max-md:flex-col gap-10 p-10 rounded-xl">
-          <div className="w-32 h-32 rounded-2xl bg-text-gray/20 shrink-0 overflow-hidden border-2 border-primary">
+          <div className="w-32 h-32 rounded-2xl bg-primary/30 shrink-0 overflow-hidden border-2 border-primary">
             {imageUrl && <img src={imageUrl} alt="Foto de perfil" className="w-full h-full object-cover " />}
           </div>
           <div className="space-y-3">
@@ -44,18 +58,22 @@ export default function ProfilePage() {
               Tamanho máximo de 2MB. Dimensões ideais 400x400px.
             </p>
             <div className="flex max-md:flex-col gap-4">
-              <Button.Root onClick={() => inputRef.current?.click()} className="text-black p-3 rounded-full">
+              <Button.Root
+                type="button"
+                onClick={() => inputRef.current?.click()}
+                className="text-black p-3 rounded-full"
+              >
                 <Button.Icon icon={Upload} />
                 Trocar Foto
               </Button.Root>
-              <Button.Root className="bg-transparent p-3 rounded-full border hover:bg-text-gray/20">
+              <Button.Root type="button" className="bg-transparent p-3 rounded-full border hover:bg-text-gray/20">
                 Remover
               </Button.Root>
             </div>
           </div>
         </div>
 
-        <div className="flex w-full gap-10 max-md:flex-col">
+        <div className="flex w-full gap-10 overflow-hidden max-lg:flex-col">
           {/* Informações Pessoais */}
           <div className="glass-card flex-1 flex flex-col gap-6 p-10 rounded-xl">
             <div className="border-b border-text-gray/20 pb-3 flex gap-3 items-center">
@@ -63,8 +81,8 @@ export default function ProfilePage() {
               <h2 className="text-white font-bold">Informações Pessoais</h2>
             </div>
             <div className="flex flex-col gap-4">
-              <Field label="Nome completo" placeholder="Seu nome" readOnly disabled value={user?.name} />
-              <Field
+              <InputField label="Nome completo" placeholder="Seu nome" readOnly disabled value={user?.name} />
+              <InputField
                 label="E-mail profissional"
                 type="email"
                 readOnly
@@ -82,28 +100,47 @@ export default function ProfilePage() {
               <h2 className="text-white font-bold">Dados Corporativos</h2>
             </div>
             <div className="flex flex-col gap-4">
-              <Field
-                label="Nome da empresa"
+              <InputField
+                label="Nome da empresa (Aparece no comprovante)"
                 type="text"
-                placeholder="Chronos Pay Ltda"
-                value={user?.company.name || ""}
+                required
+                errors={errors?.company?.name?.message}
+                placeholder="Ex: Chronos Pay Ltda"
+                {...register("company.name", { required: "Nome da empresa é obrigatório" })}
               />
-              <Field
+              <InputField
                 label="website oficial"
                 type="text"
+                required
                 placeholder="https://www.chronospay.com.br"
-                value={user?.company.website}
+                errors={errors?.company?.website?.message}
+                {...register("company.website", {
+                  pattern: {
+                    value: /^https?:\/\/.+/,
+                    message: "URL inválida — deve começar com http:// ou https://",
+                  },
+                })}
               />
-              <Field
+              <InputField
                 label="setor de atuação"
                 type="text"
+                required
                 placeholder="Pagamentos Digitais"
-                value={user?.company.industry || ""}
+                errors={errors?.company?.industry?.message}
+                {...register("company.industry", { required: "Nome da empresa é obrigatório" })}
               />
             </div>
           </div>
         </div>
-      </div>
+        <Button.Root
+          type="submit"
+          disabled={!isDirty || isSubmitting}
+          className="max-w-xs max-lg:max-w-full flex justify-center"
+        >
+          <ButtonIcon icon={Save} />
+          <span className="text-black font-semibold">Salvar</span>
+        </Button.Root>
+      </form>
     </div>
   );
 }

@@ -15,23 +15,26 @@ function Filters({ filterForm, setFilterForm }: FiltersProps) {
   const handleClearFilters = () => setFilterForm({});
 
   return (
-    <div className="flex items-center gap-5">
+    <div className="flex md:items-center max-md:flex-col gap-5">
       <TextUppercase>FILTROS ATIVOS:</TextUppercase>
 
-      {filterForm.status && (
-        <p className="bg-primary/20 rounded-md border px-3 text-primary">{labels[filterForm.status]}</p>
-      )}
-
-      {filterForm.payment_method_id && (
-        <p className="bg-primary/20 rounded-lg px-3 text-primary border">
-          {payment_methods_id[filterForm.payment_method_id] as keyof typeof payment_methods_id}
-        </p>
-      )}
+      <div className="flex flex-wrap gap-5">
+        {filterForm.status && (
+          <p className="bg-primary/20 text-sm max-md:text-xs max-md:px-2 rounded-md border px-3 text-primary">
+            {labels[filterForm.status]}
+          </p>
+        )}
+        {filterForm.payment_method_id && (
+          <p className="bg-primary/20 text-sm max-md:text-xs max-md:px-2 rounded-lg px-3 text-primary border">
+            {payment_methods_id[filterForm.payment_method_id] as keyof typeof payment_methods_id}
+          </p>
+        )}
+      </div>
 
       {hasActiveFilters && ( // ✅ nome legível
         <button
           onClick={handleClearFilters}
-          className="hover:underline text-primary cursor-pointer border border-primary/30 px-3 py-1 rounded-lg bg-primary/10"
+          className="hover:underline max-md:text-xs max-md:px-2 text-primary cursor-pointer border border-primary/30 px-3 py-1 rounded-lg bg-primary/10"
         >
           <span className="text-xs flex gap-2 items-center">
             Limpar Filtros

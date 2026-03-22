@@ -1,4 +1,4 @@
-import { CircleUser, Clock, Link2, LogOut } from "lucide-react";
+import { CircleUser, Clock, Link2, LogOut, Settings } from "lucide-react";
 import { memo, useState } from "react";
 import { Button } from "../components/Button";
 import TextUppercase from "../components/TextUppercase";
@@ -104,7 +104,7 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
                   </Button.Root>
                 </div>
 
-                {/* <div className="w-full border-t border-b border-text-gray/20 py-3 flex flex-col gap-3">
+                <div className="w-full border-t border-b border-text-gray/20 py-3 flex flex-col gap-3">
                   <button
                     onClick={() => handleNavigate("/profile")}
                     className="text-text-gray w-full flex items-center cursor-pointer hover:bg-text-gray/20 transition-all duration-200 gap-2 px-3 py-2.5 font-bold rounded-md hover:scale-105"
@@ -120,7 +120,7 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
                     <Settings size={16} />
                     Configurações
                   </button>
-                </div> */}
+                </div>
 
                 <button
                   onClick={signOut}

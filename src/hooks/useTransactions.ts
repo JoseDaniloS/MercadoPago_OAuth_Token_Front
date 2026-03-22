@@ -10,7 +10,7 @@ interface UseTransactionsProps {
   filters?: object;
 }
 
-export function useTransactions({ userId, page, pageSize = 10, filters }: UseTransactionsProps) {
+export function useTransactions({ userId, page, pageSize, filters }: UseTransactionsProps) {
   // Guarda cursores por página
   const cursorsRef = useRef<Record<number, any>>({});
 

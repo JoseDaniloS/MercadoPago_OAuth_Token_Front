@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { AuthContextData, AuthUserDynamo } from "../types/auth";
-import { getUser } from "../api/loadUser";
-import { AuthUser } from "aws-amplify/auth";
+import { getUser } from "../api/Users";
+import { AuthUser, fetchUserAttributes, updateUserAttributes } from "aws-amplify/auth";
+import { toast } from "sonner";
 
 const AuthContext = createContext<AuthContextData | undefined>(undefined);
 
@@ -12,13 +13,20 @@ export function AuthProvider({ children, userCognito }: { children: ReactNode; u
 
   useEffect(() => {
     async function loadUser() {
-      if (!userCognito?.userId) return; // ← evita chamada com userId vazio
-
       try {
         setIsLoading(true);
-        const response = await getUser(userCognito.userId);
-        console.log("Usuário carregado:", response);
-        setUser(response);
+        const [response, attributes] = await Promise.all([
+          getUser(),
+          fetchUserAttributes(), // dados do Cognito
+        ]);
+        setUser({
+          ...response,
+          company: {
+            name: attributes["custom:company_name"] || "",
+            website: response?.company?.website,
+            industry: attributes["custom:company_industry"] || "",
+          },
+        });
         setMpConnected(response.mp.isConnected);
       } catch (error) {
         console.log("Erro ao carregar usuário:", error);
@@ -30,15 +38,24 @@ export function AuthProvider({ children, userCognito }: { children: ReactNode; u
     loadUser();
   }, [userCognito?.userId]);
 
-  // async function updateUser(data: Partial<AuthUserDynamo>) {
-  //   try {
+  async function updateUser(data: Partial<AuthUserDynamo>) {
+    try {
+      setIsLoading(true);
+      await updateUserAttributes({
+        userAttributes: {
+          "custom:company_name": data.company?.name,
+          "custom:company_industry": data.company?.industry,
+        },
+      });
+      toast.success("Perfil atualizado com sucesso!");
+    } catch (error: any) {
+      toast.error(error?.message || "Erro ao atualizar usuário");
+    } finally {
+      setIsLoading(false); // sempre executa — sucesso ou erro
+    }
+  }
 
-  //   } catch (error) {
-
-  //   }
-  // }
-
-  return <AuthContext.Provider value={{ user, isLoading, mpConnected }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, isLoading, mpConnected, updateUser }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

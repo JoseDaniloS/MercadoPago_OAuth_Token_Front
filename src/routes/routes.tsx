@@ -4,6 +4,7 @@ import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-
 import MercadoPagoConnect from "../pages/MercadoPagoConnect";
 
 import Transactions from "../pages/Transactions";
+import ProfilePage from "../pages/ProfilePage";
 
 export default function AppRoutes({ user, signOut }: { user?: AuthUser; signOut?: () => void }) {
   const navigate = useNavigate();
@@ -22,9 +23,9 @@ export default function AppRoutes({ user, signOut }: { user?: AuthUser; signOut?
       {/* <Route path="/dashboard" element={<Dashboard />} /> */}
       <Route path="/oauth/mercadopago" element={<MercadoPagoConnect userCognito={user} />} />
       <Route path="/transactions" element={<Transactions userCognito={user} />} />
-      {/* <Route path="/reports" element={<div>Relatórios (em breve)</div>} />
+      <Route path="/reports" element={<div>Relatórios (em breve)</div>} />
       <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/settings" element={<div>Configurações (em breve)</div>} /> */}
+      <Route path="/settings" element={<div>Configurações (em breve)</div>} />
       <Route path="*" element={<Navigate to="/transactions" replace />} />
     </Routes>
   );

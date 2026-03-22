@@ -6,7 +6,7 @@ type LastEvaluatedKey = Record<string, unknown>;
 
 export async function fetchTransactionsWithPagination(
   userId?: string,
-  pageSize: number = 10,
+  pageSize?: number,
   lastEvaluatedKey?: LastEvaluatedKey,
   filters?: object,
 ) {
