@@ -38,9 +38,7 @@ export default function ProfilePage() {
     updateUser?.(data);
   }
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+
   return (
     <div className="min-h-screen">
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-6xl flex flex-col gap-10 p-6">

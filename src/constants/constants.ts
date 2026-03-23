@@ -43,7 +43,8 @@ export const errorMap: Record<string, string> = {
 
 export const stylesStatus = {
   approved: "bg-green-900/40 text-green-400 border-green-500/30",
-
+  active: "bg-green-900/40 text-green-400 border-green-500/30",
+  inactive: "bg-red-900/40 text-red-400 border-red-500/30",
   pending: "bg-yellow-900/40 text-yellow-400 border-yellow-500/30",
   in_process: "bg-blue-900/40 text-blue-400 border-blue-500/30",
   authorized: "bg-indigo-900/40 text-indigo-400 border-indigo-500/30",
@@ -60,10 +61,11 @@ export const stylesStatus = {
 
 export const labels: Record<keyof typeof stylesStatus, string> = {
   approved: "Aprovado",
+  active: "Ativo",
   pending: "Pendente",
   in_process: "Em análise",
   authorized: "Autorizado",
-
+  inactive: "Inativo",
   rejected: "Rejeitado",
   charged_back: "Chargeback",
 

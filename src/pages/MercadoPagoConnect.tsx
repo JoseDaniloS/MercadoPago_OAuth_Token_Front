@@ -67,9 +67,6 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
   if (error) {
     return <ErrorPage />;
   }
-  if (isLoading || loading) {
-    return <LoadingPage />;
-  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">

@@ -8,6 +8,7 @@ import { useCallback, useState } from "react";
 import { TransactionFilters } from "../types/transactionFilters";
 import SearchTransactions from "../components/TransactionsPage/SearchTransactions";
 import Filters from "../components/TransactionsPage/Filters";
+import { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
 export default function Transactions({ userCognito }: UserAmplify) {
   const [page, setPage] = useState(1);
   const [filterForm, setFilterForm] = useState<TransactionFilters>({});
@@ -43,7 +44,7 @@ export default function Transactions({ userCognito }: UserAmplify) {
     <div className="w-full p-6 min-h-screen flex flex-col gap-5 overflow-x-hidden">
       <div className="flex justify-between md:max-h-14 max-md:flex-col max-md:gap-5">
         <div>
-          <h1 className="titles">Transações</h1>
+          <h1 className="titles text-3xl">Transações</h1>
           <p className="subtitles text-wrap">Visualize e gerencie todas as transações da sua conta.</p>
         </div>
         {/* <div className="flex gap-3">
@@ -77,8 +78,8 @@ export default function Transactions({ userCognito }: UserAmplify) {
               <Table.Head.Data></Table.Head.Data>
             </Table.Head.Root>
             <Table.Body.Root>
-              {transactions.map((transaction, index) => (
-                <Table.Body.TransactionRow key={index} transaction={transaction} />
+              {transactions.map((transaction: PaymentResponse) => (
+                <Table.Body.TransactionRow key={transaction.id} transaction={transaction} />
               ))}
             </Table.Body.Root>
           </Table.Root>
@@ -101,7 +102,11 @@ export default function Transactions({ userCognito }: UserAmplify) {
             </div>
             <div className="text-center">
               <p className="text-white font-semibold">Nenhuma transação encontrada</p>
-              <p className="text-text-gray text-sm mt-1">Suas transações aparecerão aqui assim que forem realizadas.</p>
+              <p className="text-text-gray text-sm mt-1">
+                {Object.values(filterForm).some(Boolean)
+                  ? "Nenhuma transação corresponde aos filtros aplicados."
+                  : "Suas transações aparecerão aqui assim que forem realizadas."}
+              </p>
             </div>
           </div>
         )}
@@ -116,7 +121,7 @@ export default function Transactions({ userCognito }: UserAmplify) {
             <Button.Icon icon={ArrowLeft} />
           </Button.Root>
           {!isEmpty && (
-            <Button.Root className="p-2" onClick={nextPage}>
+            <Button.Root className="p-2" disabled={!hasNextPage} onClick={nextPage}>
               <Button.Icon icon={ArrowRight} />
             </Button.Root>
           )}

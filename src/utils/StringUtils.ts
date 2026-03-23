@@ -28,3 +28,23 @@ export function formatDocument(value?: string | number): string {
 export function getInitialChar(value?: string) {
   return value?.slice(0, 1) || "?";
 }
+
+export function formatFrequencyFreeTrial(frequency?: number, frequencyType?: "days" | "months") {
+  if (!frequency || !frequencyType) return null;
+  if (frequency <= 0) return "Inválido";
+
+  const units = {
+    days: frequency === 1 ? "dia" : "dias",
+    months: frequency === 1 ? "mês" : "meses",
+  };
+
+  return `${frequency} ${units[frequencyType]}`;
+}
+
+export function formatFrequency(frequency_type: "days" | "months", frequency: number = 1) {
+  if (frequency === 1) {
+    return frequency_type === "months" ? "Mensal" : "Diário";
+  }
+
+  return `${frequency} ${frequency_type === "months" ? "meses" : "dias"}`;
+}

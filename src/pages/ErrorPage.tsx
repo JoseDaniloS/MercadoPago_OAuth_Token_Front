@@ -3,7 +3,7 @@ import { Button } from "../components/Button";
 
 export default function ErrorPage() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center tech-grid bg-midnight-dark p-6 text-white">
+    <div className="min-h-screen overflow-hidden flex flex-col items-center justify-center tech-grid bg-midnight-dark p-6 text-white">
       <div className="text-center max-w-md flex flex-col items-center">
         <h1 className="text-6xl font-bold text-primary drop-shadow-md">404</h1>
         <h2 className="text-2xl font-semibold mt-4">Oops! Algo deu errado.</h2>

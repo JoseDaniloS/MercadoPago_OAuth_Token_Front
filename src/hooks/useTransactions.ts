@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRef } from "react";
-import { fetchTransactionsWithPagination } from "../api/fetchTransactions";
+import { fetchPlans, fetchTransactionsWithPagination } from "../api/fetchTransactions";
 import { toast } from "sonner";
 
 interface UseTransactionsProps {
@@ -19,7 +19,6 @@ export function useTransactions({ userId, page, pageSize, filters }: UseTransact
     enabled: !!userId,
     staleTime: 1000 * 60, // 1 min
     retry: 3,
-  
 
     queryFn: async () => {
       const cursor = page === 1 ? undefined : cursorsRef.current[page - 1];
@@ -32,6 +31,16 @@ export function useTransactions({ userId, page, pageSize, filters }: UseTransact
       }
 
       return response.Items.length > 0 ? response : toast.info("Nenhuma transação encontrada");
+    },
+  });
+}
+
+export function usePlans() {
+  return useQuery({
+    queryKey: ["plans"],
+    queryFn: async () => {
+      const response = await fetchPlans();
+      return response.Items;
     },
   });
 }

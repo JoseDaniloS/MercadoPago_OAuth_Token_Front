@@ -1,4 +1,4 @@
-import { CircleUser, Clock, Link2, LogOut, Settings } from "lucide-react";
+import { CircleUser, Clock, CreditCard, Link2, LogOut, Repeat, Settings } from "lucide-react";
 import { memo, useState } from "react";
 import { Button } from "../components/Button";
 import TextUppercase from "../components/TextUppercase";
@@ -40,8 +40,8 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
           CHRONOS<span className="text-primary">PAY</span>
         </p>
         <div className="flex gap-10 max-md:hidden px-10">
-          {/* <NavLink path="/dashboard" label="Dashboard" /> */}
           <NavLink path="/transactions" label="Transações" />
+          <NavLink path="/subscribes" label="Planos e Assinaturas" />
           {/* <NavLink path="/reports" label="Relatórios" /> */}
         </div>
       </div>
@@ -71,7 +71,7 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -8 }}
                 transition={{ duration: 0.15, ease: "easeOut" }}
-                className="absolute right-0 top-12 rounded-2xl backdrop-blur-md text-start flex flex-col gap-3 p-5 min-w-64 glass-card text-white z-20"
+                className="absolute max-md:-right-4 right-0 top-12 rounded-2xl backdrop-blur-md text-start flex flex-col gap-3 p-5 min-w-64 glass-card text-white z-20"
               >
                 <div className="w-full flex items-center gap-3">
                   <div
@@ -102,6 +102,24 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
                     <Button.Icon icon={Link2} className={`${!mpConnected && "text-red-400"}`} />
                     {mpConnected ? "Ver Credenciais Mercado Pago" : "Conectar Mercado Pago"}
                   </Button.Root>
+                </div>
+
+                <div className="w-full border-t border-text-gray/20 py-3 flex flex-col gap-3">
+                  <button
+                    onClick={() => handleNavigate("/transactions")}
+                    className="text-text-gray border-l-primary border-l-3 w-full flex items-center cursor-pointer hover:bg-text-gray/20 transition-all duration-200 gap-2 px-3 py-2.5 font-bold rounded-md hover:scale-105"
+                  >
+                    <CreditCard size={16} />
+                    Transações
+                  </button>
+
+                  <button
+                    onClick={() => handleNavigate("/subscribes")}
+                    className="text-text-gray border-l-primary border-l-3 w-full flex items-center cursor-pointer hover:bg-text-gray/20 transition-all duration-200 gap-2 px-3 py-2.5 font-bold rounded-md hover:scale-105"
+                  >
+                    <Repeat size={16} />
+                    Planos e Assinaturas
+                  </button>
                 </div>
 
                 <div className="w-full border-t border-b border-text-gray/20 py-3 flex flex-col gap-3">

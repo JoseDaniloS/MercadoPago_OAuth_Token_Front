@@ -1,10 +1,12 @@
 import { AuthUser } from "aws-amplify/auth";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import MercadoPagoConnect from "../pages/MercadoPagoConnect";
+import LoadingPage from "../pages/LoadingPage";
+import { PreApprovalPlanPage } from "../pages/PreApprovalPlanPage";
 
-import Transactions from "../pages/Transactions";
-import ProfilePage from "../pages/ProfilePage";
+const MercadoPagoConnect = lazy(() => import("../pages/MercadoPagoConnect"));
+const Transactions = lazy(() => import("../pages/Transactions"));
+const ProfilePage = lazy(() => import("../pages/ProfilePage"));
 
 export default function AppRoutes({ user, signOut }: { user?: AuthUser; signOut?: () => void }) {
   const navigate = useNavigate();
@@ -19,14 +21,16 @@ export default function AppRoutes({ user, signOut }: { user?: AuthUser; signOut?
   if (!user || !signOut) return null;
 
   return (
-    <Routes>
-      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-      <Route path="/oauth/mercadopago" element={<MercadoPagoConnect userCognito={user} />} />
-      <Route path="/transactions" element={<Transactions userCognito={user} />} />
-      <Route path="/reports" element={<div>Relatórios (em breve)</div>} />
-      <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/settings" element={<div>Configurações (em breve)</div>} />
-      <Route path="*" element={<Navigate to="/transactions" replace />} />
-    </Routes>
+    <Suspense fallback={<LoadingPage />}>
+      <Routes>
+        <Route path="/oauth/mercadopago" element={<MercadoPagoConnect userCognito={user} />} />
+        <Route path="/transactions" element={<Transactions userCognito={user} />} />
+        <Route path="/subscribes" element={<PreApprovalPlanPage />} />
+        <Route path="/reports" element={<div>Relatórios (em breve)</div>} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/settings" element={<div>Configurações (em breve)</div>} />
+        <Route path="*" element={<Navigate to="/transactions" replace />} />
+      </Routes>
+    </Suspense>
   );
 }

@@ -10,13 +10,8 @@ export async function fetchTransactionsWithPagination(
   lastEvaluatedKey?: LastEvaluatedKey,
   filters?: object,
 ) {
-  if (!userId) {
-    throw new Error("User id não informado");
-  }
-
   try {
     const params = new URLSearchParams({
-      userId,
       pageSize: String(pageSize),
       ...(lastEvaluatedKey && {
         lastEvaluatedKey: JSON.stringify(lastEvaluatedKey),
@@ -36,6 +31,23 @@ export async function fetchTransactionsWithPagination(
   } catch (error) {
     console.error("Erro ao buscar transações:", error);
     toast.error("Erro ao buscar transações");
+    throw error;
+  }
+}
+
+export async function fetchPlans() {
+  try {
+    const idToken = await getCognitoIdToken();
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/subscribe`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    toast.success("Planos obtidos com sucesso!!");
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar planos:", error);
+    toast.error("Erro ao buscar Planos");
     throw error;
   }
 }
