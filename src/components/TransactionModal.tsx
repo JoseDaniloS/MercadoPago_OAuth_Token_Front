@@ -9,7 +9,7 @@ import StatusBadge from "./statusBadge";
 import { errorMap, stylesStatus } from "../constants/constants";
 import { Button } from "./Button";
 import { formatDate } from "../utils/DateUtils";
-import { createPortal} from "react-dom" //criar o modal fora diretamente no body
+import { createPortal } from "react-dom"; //criar o modal fora diretamente no body
 import { Modal } from "./Modal";
 interface TransactionModalProps {
   transaction: PaymentResponse;
@@ -22,11 +22,12 @@ export default function TransactionModal({ transaction, setShow }: TransactionMo
   return (
     <Modal setShow={setShow}>
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: -30 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: -8 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        style={{ willChange: "transform, opacity" }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="glass-card rounded-lg  overflow-y-auto max-md:h-full  shadow-xl p-6 w-full max-w-4xl"
+        className="glass-card rounded-lg transform-gpu  overflow-y-auto max-md:h-full  shadow-xl p-6 w-full max-w-4xl"
         onClick={(e) => e.stopPropagation()}
       >
         <header className="py-6 flex gap-3 items-center">

@@ -12,9 +12,10 @@ export function Modal({ setShow, children }: ModalProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      style={{ willChange: "transform, opacity" }}
       transition={{ duration: 0.15, ease: "easeOut" }}
       onClick={() => setShow(false)}
-      className="fixed inset-0 p-6 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs "
+      className=" transform-gpu fixed inset-0 p-6 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs "
     >
       {children}
     </motion.div>,
