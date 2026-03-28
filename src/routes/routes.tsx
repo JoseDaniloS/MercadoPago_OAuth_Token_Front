@@ -3,6 +3,7 @@ import { useEffect, lazy, Suspense } from "react";
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import LoadingPage from "../pages/LoadingPage";
 import { PreApprovalPlanPage } from "../pages/PreApprovalPlanPage";
+import { PreApprovalPlanSubscribersPage } from "../pages/PreApprovalPlanPageSubscribers";
 
 const MercadoPagoConnect = lazy(() => import("../pages/MercadoPagoConnect"));
 const Transactions = lazy(() => import("../pages/Transactions"));
@@ -25,7 +26,8 @@ export default function AppRoutes({ user, signOut }: { user?: AuthUser; signOut?
       <Routes>
         <Route path="/oauth/mercadopago" element={<MercadoPagoConnect userCognito={user} />} />
         <Route path="/transactions" element={<Transactions userCognito={user} />} />
-        <Route path="/subscribes" element={<PreApprovalPlanPage />} />
+        <Route path="/preapproval" element={<PreApprovalPlanPage />} />
+        <Route path="/preapproval/:preapproval_plan_id/subscribers" element={<PreApprovalPlanSubscribersPage />} />
         <Route path="/reports" element={<div>Relatórios (em breve)</div>} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/settings" element={<div>Configurações (em breve)</div>} />

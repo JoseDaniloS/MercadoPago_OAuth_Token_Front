@@ -1,3 +1,4 @@
+import SubscriberRow from "./SubscriberRow";
 import TableBody from "./TableBody";
 import TableBodyData from "./TableBodyData";
 import TableHead from "./TableHead";
@@ -18,5 +19,6 @@ export const Table = {
     Row: TableRow,
     Data: TableBodyData,
     TransactionRow: TransactionRow,
+    SubscriberRow: SubscriberRow
   },
 };

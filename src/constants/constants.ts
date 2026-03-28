@@ -34,11 +34,12 @@ export const errorMap: Record<string, string> = {
   rejected_by_bank: "Operação recusada pelo banco.",
   rejected_by_regulations: "Pagamento recusado por regulamentação.",
   rejected_by_biz_rule: "Pagamento recusado por regra de negócio.",
-
+  expired: "Pagamento expirado. O tempo limite foi atingido.",
   authorized: "Pagamento autorizado (não capturado).",
   cancelled: "Pagamento cancelado.",
   refunded: "Pagamento reembolsado.",
   in_mediation: "Pagamento em disputa.",
+  
 };
 
 export const stylesStatus = {
@@ -48,7 +49,7 @@ export const stylesStatus = {
   pending: "bg-yellow-900/40 text-yellow-400 border-yellow-500/30",
   in_process: "bg-blue-900/40 text-blue-400 border-blue-500/30",
   authorized: "bg-indigo-900/40 text-indigo-400 border-indigo-500/30",
-
+  paused: "bg-yellow-500/20 text-yellow-400",
   rejected: "bg-red-900/40 text-red-400 border-red-500/30",
   charged_back: "bg-red-950/50 text-red-500 border-red-700/40",
 
@@ -68,7 +69,7 @@ export const labels: Record<keyof typeof stylesStatus, string> = {
   inactive: "Inativo",
   rejected: "Rejeitado",
   charged_back: "Chargeback",
-
+  paused: "Pausado",
   refunded: "Estornado",
   cancelled: "Cancelado",
 

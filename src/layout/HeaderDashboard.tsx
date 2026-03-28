@@ -41,7 +41,7 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
         </p>
         <div className="flex gap-10 max-md:hidden px-10">
           <NavLink path="/transactions" label="Transações" />
-          <NavLink path="/subscribes" label="Planos e Assinaturas" />
+          <NavLink path="/preapproval" label="Planos e Assinaturas" />
           {/* <NavLink path="/reports" label="Relatórios" /> */}
         </div>
       </div>
@@ -114,7 +114,7 @@ function HeaderDashboard({ signOut }: HeaderDashboardProps) {
                   </button>
 
                   <button
-                    onClick={() => handleNavigate("/subscribes")}
+                    onClick={() => handleNavigate("/preapproval")}
                     className="text-text-gray border-l-primary border-l-3 w-full flex items-center cursor-pointer hover:bg-text-gray/20 transition-all duration-200 gap-2 px-3 py-2.5 font-bold rounded-md hover:scale-105"
                   >
                     <Repeat size={16} />

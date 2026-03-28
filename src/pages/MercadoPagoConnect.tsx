@@ -6,7 +6,6 @@ import { ArrowRight, CheckCircle, Info, KeyRound } from "lucide-react";
 import CopyButton from "../components/copyButton";
 import { Button } from "../components/Button";
 import ErrorPage from "./ErrorPage";
-import LoadingPage from "./LoadingPage";
 import { AuthUser } from "aws-amplify/auth";
 import { truncateString } from "../utils/StringUtils";
 import { useAuth } from "../context/AuthContext";

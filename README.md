@@ -1,109 +1,151 @@
-# 🧩 Chronos Front-End Template
+# Criar Checkout
 
-> Template profissional para aplicações React com Tailwind CSS, criado pela [Chronos - Web Soluções](https://github.com/Chronos-Startup).
-
----
-
-## 📸 Prévia
-
-![Capa do projeto](./assets/image.png)
+Cria uma sessão de checkout que pode ser usada para redirecionar o usuário para a página de pagamento.
 
 ---
 
-## 🚀 Sobre o Projeto
+## 1. Endpoint
 
-Este é o template oficial de Front-End da **Chronos**, desenvolvido com **React** e **Tailwind CSS**. Ele serve como ponto de partida para projetos web modernos e escaláveis.
-
-O projeto já vem configurado com:
-
-- Acessibilidade: Integração com **VLibras**;
-- Qualidade de código: **ESLint** + **Prettier** prontos para uso.
-
----
-
-## ⚙️ Tecnologias Utilizadas
-
-- 🔹 [React](https://reactjs.org/)
-- 🔹 [Vite](https://vitejs.dev/)
-- 🔹 [Tailwind CSS](https://tailwindcss.com/)
-- 🔹 [ESLint + Prettier](https://eslint.org/)
-- 🔹 [VLibras](https://www.gov.br/governodigital/pt-br/acessibilidade)
-
----
-
-## 🛠️ Como Usar
-
-### 📥 1. Crie seu repositório a partir do template
-
-1. Acesse o [template no GitHub](https://github.com/Chronos-Startup/nomedotemplate)
-2. Clique no botão **`Use this template`**
-3. Escolha a opção **`Create a new repository`**
-
-#### 🖼️ Passo a passo ilustrado
-
-**➊ Crie um novo repositório**
-
-![Criar repositório - Passo 1](./assets/Design%20sem%20nome.png)
-
-**➋ Clique em "Use this template"**
-
-![Criar repositório - Passo 2](<./assets/Design%20sem%20nome%20(1).png>)
-
-**➌ Escolha a opção "Create a new repository"**
-
-![Criar repositório - Passo 3](<./assets/Design%20sem%20nome%20(2).png>)
-
----
-
-### 💻 2. Clone o repositório
-
-```bash
-git clone https://github.com/seu-usuario/seu-novo-repositorio.git
-cd seu-novo-repositorio
+```
+POST https://emot34fjb7.execute-api.us-east-1.amazonaws.com/v1/checkout
 ```
 
 ---
 
-### 📦 3. Instale as dependências
+## 2. Headers obrigatórios
 
-```bash
-npm install
+| Header | Tipo | Descrição |
+|---|---|---|
+| `x-user-id` | string | ID do usuário no Chronos Pay |
+| `x-public-key` | string | Public Key do Mercado Pago |
+
+**Exemplo**
+
+```
+x-user-id: <YOUR_USER_ID>
+x-public-key: <YOUR_PUBLIC_KEY_MP>
 ```
 
 ---
 
-### 🔧 4. Inicie o projeto localmente
+## 3. Body da Requisição
 
-```bash
-npm run dev
+```json
+{
+  "transaction_amount": "1000",
+  "description": "Pedido #1042 - Plano Pro",
+  "payer": {
+    "first_name": "<FIRST_NAME>",
+    "last_name": "<LAST_NAME>"
+  }
+}
+```
+
+**Campos**
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `transaction_amount` | string | Valor da transação |
+| `description` | string | Descrição do pagamento |
+| `payer.first_name` | string | Nome do pagador |
+| `payer.last_name` | string | Sobrenome do pagador |
+
+---
+
+## 4. Resposta da API
+
+```json
+{
+  "checkout_id": "chk_123456789"
+}
+```
+
+**Campos**
+
+| Campo | Descrição |
+|---|---|
+| `checkout_id` | ID da sessão de checkout |
+
+---
+
+## 5. Redirecionamento para o Checkout
+
+Após receber o `checkout_id`, redirecione o usuário para a página de pagamento.
+
+**URL do Checkout**
+
+```
+https://checkout.chronospay.ufersa.dev.br/{PUBLIC_ID}/{CHECKOUT_ID}
+```
+
+**Exemplo**
+
+```
+https://checkout.chronospay.ufersa.dev.br/your_public_id_here/chk_123456789
 ```
 
 ---
 
-## 📁 Estrutura de Pastas
+## 6. Exemplo em React
 
+```tsx
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+const PUBLIC_ID = "your_public_id_here";
+
+export default function CheckoutPage() {
+  const [checkoutId, setCheckoutId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (checkoutId) {
+      window.location.href = `https://checkout.chronospay.ufersa.dev.br/${PUBLIC_ID}/${checkoutId}`;
+    }
+  }, [checkoutId]);
+
+  async function createCheckout() {
+    try {
+      const response = await axios.post(
+        "https://emot34fjb7.execute-api.us-east-1.amazonaws.com/v1/checkout",
+        {
+          transaction_amount: "1000",
+          description: "Pedido #1042 - Plano Pro",
+          payer: {
+            first_name: "<FIRST_NAME>",
+            last_name: "<LAST_NAME>",
+          },
+        },
+        {
+          headers: {
+            "x-user-id": "<YOUR_USER_ID>",
+            "x-public-key": "<YOUR_PUBLIC_KEY_MP>",
+          },
+        }
+      );
+
+      setCheckoutId(response.data.checkout_id);
+    } catch (error) {
+      console.error("Erro ao criar checkout:", error);
+    }
+  }
+
+  return (
+    <button onClick={createCheckout}>
+      Pagar
+    </button>
+  );
+}
 ```
-src/
-├── assets/         # Imagens e arquivos estáticos
-├── components/     # Componentes reutilizáveis
-├── pages/          # Páginas da aplicação
-├── styles/         # Estilos globais (se necessário)
-└── App.jsx         # Componente principal
+
+---
+
+## 7. Fluxo de Integração
+
+1. Cliente chama `createCheckout`
+2. API cria uma sessão de checkout
+3. API retorna `checkout_id`
+4. Frontend redireciona para:
 ```
-
----
-
-## 🤝 Contribuições
-
-Contribuições são super bem-vindas!  
-Abra uma **issue**, sugira melhorias ou envie um **pull request**.
-
----
-
-## 📄 Licença
-
-Distribuído sob a Licença MIT. Veja o arquivo `LICENSE` para mais informações.
-
----
-
-© 2025 Chronos. Todos os direitos reservados.
+checkout.chronospay.ufersa.dev.br/{PUBLIC_ID}/{CHECKOUT_ID}
+```
+5. Usuário realiza o pagamento

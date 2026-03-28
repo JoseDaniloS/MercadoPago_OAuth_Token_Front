@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Plan } from "../../types/PlanTypes";
 import { formatDate } from "../../utils/DateUtils";
 import { formatFrequency, formatFrequencyFreeTrial } from "../../utils/StringUtils";
@@ -5,13 +6,16 @@ import { Button } from "../Button";
 import CopyButton from "../copyButton";
 import StatusBadge from "../statusBadge";
 import { PreApprovalPlanResponse } from "mercadopago/dist/clients/preApprovalPlan/commonTypes";
+import { useAuth } from "../../context/AuthContext";
 
 interface PlanCardInterfaceComposition {
   plan: PreApprovalPlanResponse;
 }
 
 export function PlanCard({ plan }: PlanCardInterfaceComposition) {
-  console.log(plan);
+  const { user } = useAuth();
+  const URL_TO_PREAPPROVAL = `https://checkout.chronospay.ufersa.dev.br/preaproval/${user?.mp.public_key}/${plan.id}/${user?.user_id}`;
+  const navigate = useNavigate();
   const { date } = formatDate(plan.date_created);
   const trial = formatFrequencyFreeTrial(
     plan?.auto_recurring?.free_trial?.frequency,
@@ -30,7 +34,7 @@ export function PlanCard({ plan }: PlanCardInterfaceComposition) {
       </div>
 
       <div className="flex items-baseline gap-1">
-        <span className="text-2xl font-bold text-white">R$ {plan?.auto_recurring?.transaction_amount}</span>
+        <span className="text-2xl font-bold text-white">R$ {plan?.auto_recurring?.transaction_amount?.toFixed(2)}</span>
         <span className="text-sm text-white/40">
           /{formatFrequency(plan?.auto_recurring?.frequency_type, plan?.auto_recurring?.frequency)}
         </span>
@@ -44,18 +48,25 @@ export function PlanCard({ plan }: PlanCardInterfaceComposition) {
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-white/3 rounded-xl p-3 flex flex-col gap-0.5">
           <span className="text-xs text-white/40">Assinantes</span>
-          <span className="text-lg font-semibold text-white">{plan?.subscribers || "0"}</span>
+          <span className="text-lg font-semibold text-white">{plan?.subscribers_count || "0"}</span>
         </div>
         <div className="bg-white/3 rounded-xl p-3 flex flex-col gap-0.5">
           <span className="text-xs text-white/40">MRR</span>
-          <span className="text-lg font-semibold text-white">R$ {plan?.mrr || 0}</span>
+          <span className="text-lg font-semibold text-white">
+            R$ {(plan?.subscribers_count * plan?.auto_recurring?.transaction_amount)?.toFixed(2) || "0"}
+          </span>
         </div>
       </div>
 
-      <CopyButton value={plan.init_point}>Copiar Link</CopyButton>
+      <CopyButton value={URL_TO_PREAPPROVAL}>Copiar Link</CopyButton>
 
       <div className="flex justify-between">
-        <Button.Root className="bg-transparent w-full hover:bg-white/20 hover:text-white">Ver assinantes</Button.Root>
+        <Button.Root
+          onClick={() => navigate(`/preapproval/${plan.id}/subscribers`)}
+          className="bg-transparent w-full hover:bg-white/20 hover:text-white"
+        >
+          Ver assinantes
+        </Button.Root>
         <Button.Root className="bg-transparent w-full text-primary  hover:bg-primary/20">Editar</Button.Root>
       </div>
     </div>

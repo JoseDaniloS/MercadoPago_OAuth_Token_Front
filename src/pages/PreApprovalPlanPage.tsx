@@ -18,7 +18,6 @@ import { PreApprovalPlanResponse } from "mercadopago/dist/clients/preApprovalPla
 export function PreApprovalPlanPage() {
   const { data, isLoading } = usePlans();
   const [show, setShow] = useState<boolean | null>(null);
-
   const handleShowModal = () => {
     setShow(true);
   };
