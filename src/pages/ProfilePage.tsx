@@ -3,14 +3,13 @@ import { Button } from "../components/Button";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useRef } from "react";
 import { useImageUpload } from "../utils/HandleImageChange";
-import LoadingPage from "./LoadingPage";
 import ButtonIcon from "../components/Button/ButtonIcon";
 import { useForm } from "react-hook-form";
 import { AuthUserDynamo } from "../types/auth";
 import InputField from "../components/InputField";
 
 export default function ProfilePage() {
-  const { user, isLoading, updateUser } = useAuth();
+  const { user, updateUser } = useAuth();
   const { handleImageChange, imageUrl } = useImageUpload();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -37,7 +36,6 @@ export default function ProfilePage() {
     console.log(data);
     updateUser?.(data);
   }
-
 
   return (
     <div className="min-h-screen">

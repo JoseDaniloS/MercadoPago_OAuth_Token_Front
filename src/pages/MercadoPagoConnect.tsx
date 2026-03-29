@@ -9,7 +9,6 @@ import ErrorPage from "./ErrorPage";
 import { AuthUser } from "aws-amplify/auth";
 import { truncateString } from "../utils/StringUtils";
 import { useAuth } from "../context/AuthContext";
-import { MercadoPagoIntegration } from "../types/auth";
 
 export interface UserAmplify {
   userCognito?: AuthUser;
@@ -19,17 +18,10 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
   const CLIENT_ID = "1549445475571223";
-  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [oAuthData, setOAuthData] = useState<MercadoPagoIntegration | null>(null);
 
   const { user, isLoading, mpConnected } = useAuth();
-
-  useEffect(() => {
-    if (user?.mp) {
-      setOAuthData(user.mp);
-    }
-  }, [user]);
+  const oAuthData = useMemo(() => user?.mp ?? null, [user?.mp]);
 
   const navigate = useNavigate();
   const redirectUri = useMemo(() => `${window.location.origin}/oauth/mercadopago`, []);
@@ -47,16 +39,13 @@ export default function MercadoPagoConnect({ userCognito }: UserAmplify) {
           window.location.href = `https://auth.mercadopago.com.br/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${redirectUri}`;
           return;
         }
-        setLoading(true);
 
         // Tem code → faz o OAuth
-        const response = await fetchOAuthMercadoPago(userId, code);
-        if (response) setOAuthData(response);
+        await fetchOAuthMercadoPago(userId, code);
+        window.location.reload();
       } catch (error) {
         console.log(error);
         setError(true);
-      } finally {
-        setLoading(false);
       }
     };
 

@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { Plan } from "../../types/PlanTypes";
 import { formatDate } from "../../utils/DateUtils";
 import { formatFrequency, formatFrequencyFreeTrial } from "../../utils/StringUtils";
 import { Button } from "../Button";
@@ -21,7 +20,6 @@ export function PlanCard({ plan }: PlanCardInterfaceComposition) {
     plan?.auto_recurring?.free_trial?.frequency,
     plan?.auto_recurring?.free_trial?.frequency_type,
   );
-  const isRecurring = !!plan.auto_recurring;
 
   return (
     <div className="glass-card p-5 gap-4 rounded-2xl flex flex-col">

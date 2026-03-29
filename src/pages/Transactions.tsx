@@ -1,19 +1,16 @@
 import { ArrowLeft, ArrowRight, ArrowUpDown, LoaderCircleIcon, Search } from "lucide-react";
 import { Button } from "../components/Button";
 import { Table } from "../components/Table";
-
-import { UserAmplify } from "./MercadoPagoConnect";
 import { useTransactions } from "../hooks/useTransactions";
 import { useCallback, useState } from "react";
 import { TransactionFilters } from "../types/transactionFilters";
 import SearchTransactions from "../components/TransactionsPage/SearchTransactions";
 import Filters from "../components/TransactionsPage/Filters";
 import { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
-export default function Transactions({ userCognito }: UserAmplify) {
+export default function Transactions() {
   const [page, setPage] = useState(1);
   const [filterForm, setFilterForm] = useState<TransactionFilters>({});
   const { data, isLoading } = useTransactions({
-    userId: userCognito?.userId,
     page,
     pageSize: 10,
     filters: filterForm,

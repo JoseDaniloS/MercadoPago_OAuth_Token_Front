@@ -9,7 +9,6 @@ import StatusBadge from "./statusBadge";
 import { errorMap, stylesStatus } from "../constants/constants";
 import { Button } from "./Button";
 import { formatDate } from "../utils/DateUtils";
-import { createPortal } from "react-dom"; //criar o modal fora diretamente no body
 import { Modal } from "./Modal";
 interface TransactionModalProps {
   transaction: PaymentResponse;

@@ -25,7 +25,7 @@ export default function AppRoutes({ user, signOut }: { user?: AuthUser; signOut?
     <Suspense fallback={<LoadingPage />}>
       <Routes>
         <Route path="/oauth/mercadopago" element={<MercadoPagoConnect userCognito={user} />} />
-        <Route path="/transactions" element={<Transactions userCognito={user} />} />
+        <Route path="/transactions" element={<Transactions />} />
         <Route path="/preapproval" element={<PreApprovalPlanPage />} />
         <Route path="/preapproval/:preapproval_plan_id/subscribers" element={<PreApprovalPlanSubscribersPage />} />
         <Route path="/reports" element={<div>Relatórios (em breve)</div>} />

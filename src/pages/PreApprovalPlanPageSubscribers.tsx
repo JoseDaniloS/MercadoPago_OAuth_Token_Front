@@ -84,7 +84,7 @@ export default function PreApprovalPlanSubscribersPage() {
       )}
 
       <InfoNote title="Informação">
-        Assinantes cancelados ou inadimplentes podem aparecer com status diferente de "Ativo". Verifique o painel do
+        Assinantes cancelados ou inadimplentes podem aparecer com status diferente de &quot;Ativo&quot;. Verifique o painel do
         Mercado Pago para mais detalhes.
       </InfoNote>
     </div>
