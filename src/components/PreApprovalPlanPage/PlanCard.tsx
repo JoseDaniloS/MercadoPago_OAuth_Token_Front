@@ -13,7 +13,7 @@ interface PlanCardInterfaceComposition {
 
 export function PlanCard({ plan }: PlanCardInterfaceComposition) {
   const { user } = useAuth();
-  const URL_TO_PREAPPROVAL = `https://checkout.chronospay.ufersa.dev.br/preaproval/${user?.mp.public_key}/${plan.id}/${user?.user_id}`;
+  const URL_TO_PREAPPROVAL = `https://checkout.chronospay.ufersa.dev.br/preapproval/${user?.mp.public_key}/${plan.id}/${user?.user_id}`;
   const navigate = useNavigate();
   const { date } = formatDate(plan.date_created);
   const trial = formatFrequencyFreeTrial(
