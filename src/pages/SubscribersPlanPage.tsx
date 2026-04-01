@@ -25,9 +25,9 @@ type Subscriber = {
   };
 };
 
-export default function PreApprovalPlanSubscribersPage() {
-  const { preapproval_plan_id } = useParams<{ preapproval_plan_id: string }>();
-  const { data, isLoading } = useSubscribers(preapproval_plan_id!);
+export default function SubscribersPlanPage() {
+  const { plan_id } = useParams<{ plan_id: string }>();
+  const { data, isLoading } = useSubscribers(plan_id!);
 
   return (
     <div className="w-full p-6 min-h-screen flex flex-col gap-10 overflow-x-hidden">
@@ -45,9 +45,7 @@ export default function PreApprovalPlanSubscribersPage() {
       </div>
 
       {/* Loading */}
-      {isLoading && (
-        <LoadingCircle />
-      )}
+      {isLoading && <LoadingCircle />}
 
       {/* Sem assinantes */}
       {!isLoading && (!data || data.length === 0) && (
@@ -82,8 +80,8 @@ export default function PreApprovalPlanSubscribersPage() {
       )}
 
       <InfoNote title="Informação">
-        Assinantes cancelados ou inadimplentes podem aparecer com status diferente de &quot;Ativo&quot;. Verifique o painel do
-        Mercado Pago para mais detalhes.
+        Assinantes cancelados ou inadimplentes podem aparecer com status diferente de &quot;Ativo&quot;. Verifique o
+        painel do Mercado Pago para mais detalhes.
       </InfoNote>
     </div>
   );

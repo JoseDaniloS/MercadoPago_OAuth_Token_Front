@@ -19,7 +19,7 @@ export function PlanCard({ plan }: PlanCardInterfaceComposition) {
     plan?.auto_recurring?.free_trial?.frequency,
     plan?.auto_recurring?.free_trial?.frequency_type,
   );
-  const URL_TO_PREAPPROVAL = `https://checkout.chronospay.ufersa.dev.br/preapproval/${user?.mp.public_key}/${plan.id}/${user?.user_id}`;
+  const URL_TO_PREAPPROVAL = `https://checkout.chronospay.ufersa.dev.br/plans/${user?.mp.public_key}/${plan.id}/${user?.user_id}`;
 
   return (
     <div className="glass-card p-5 gap-4 rounded-2xl flex flex-col justify-between">
@@ -50,7 +50,7 @@ export function PlanCard({ plan }: PlanCardInterfaceComposition) {
 
       <div className="grid grid-cols-2 gap-3">
         <button
-          onClick={() => navigate(`/preapproval/${plan.id}/subscribers`)}
+          onClick={() => navigate(`/plans/${plan.id}/subscribers`)}
           className="bg-white/3 cursor-pointer group rounded-xl p-3 flex  justify-between items-center"
         >
           <div className="flex flex-col text-start gap-0.5">

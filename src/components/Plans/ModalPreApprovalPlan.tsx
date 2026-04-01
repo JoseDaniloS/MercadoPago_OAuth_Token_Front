@@ -11,7 +11,7 @@ import { Plan } from "../../types/PlanTypes";
 import { createPreApprovalPlan } from "../../api/PreApproval";
 import { useState } from "react";
 
-export default function ModalPreApprovalPlan() {
+export default function ModalCreatePlan() {
   const { register, handleSubmit } = useForm<Plan>();
 
   async function onSubmit(data: Plan) {
